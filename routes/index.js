@@ -1,9 +1,13 @@
-var express = require('express');
-var router = express.Router();
+const express 	= require('express');
+const router 	= express.Router();
+const sql 		= require('../lib/sql');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'TESTE' });
+router.get('/', async function(req, res, next) {
+	// let users = await sql.findAllUsers();
+	// console.log(users);
+	let a = await sql.teste();
+	console.log(a);
+	res.render('index');
 });
 
 module.exports = router;

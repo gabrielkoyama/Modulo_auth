@@ -1,0 +1,8 @@
+
+USE AUTH;
+
+CREATE TABLE tb_user(
+	usu_cd INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	usu_nm VARCHAR(50), 
+	usu_cpf VARCHAR(50)
+);
