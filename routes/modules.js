@@ -4,7 +4,7 @@ const sql 		= require('../lib/sql');
 const router  	= express.Router();
 
 router.get('/', function(req, res, next) {
-	sql.findAllUser( (err, response) => {
+	sql.findAll( (err, response) => {
 		if(err) console.error(err);
 		res.send(response);
 	});
@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/findById/:id', function(req, res, next) {
 	if(req.params){
-		sql.findByIdUser( req.params.id, (err, response) => {
+		sql.findById( req.params.id, (err, response) => {
 			if(err) console.error(err);
 			res.send(response);
 		});
@@ -30,7 +30,7 @@ router.post('/add', function(req, res, next) {
 		data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
 		cpf: 		req.body.cpf
 	}
-	sql.insertOneUser(data, response => {
+	sql.insertOne(data, response => {
 		res.sendStatus(200);
 	});
 });
@@ -38,7 +38,7 @@ router.post('/add', function(req, res, next) {
 router.post('/delete', function(req, res, next) {
 	if(req.body){
 		console.log(req.body.id);
-		sql.deleteOneUser(req.body.id, function(err, response){
+		sql.delete(req.body.id, function(err, response){
 			if(err) console.error(err);
 			res.sendStatus(200);
 		});
@@ -58,7 +58,7 @@ router.post('/edit', function(req, res, next) {
 			data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
 			cpf: 		req.body.cpf
 		}
-		sql.updateUser(data, function(err, response){
+		sql.update(data, function(err, response){
 			if(err) console.error(err)
 			res.send(200);
 		});
@@ -66,7 +66,5 @@ router.post('/edit', function(req, res, next) {
 		res.send(500);
 	}
 });
-
-// PERMISSOES DOING
 
 module.exports = router;

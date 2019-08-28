@@ -13,6 +13,6 @@ CREATE TABLE IF NOT EXISTS tb_user(
 );
 
 -- ------------------- INSERTS TESTE ---------------------------
-INSERT INTO tb_user (usu_nm, usu_psw, usu_email, usu_sobrenome, usu_data_nasc, usu_cpf) VALUES ('usu_nm', 'usu_psw', 'usu_email', 'usu_sobrenome', '2017-06-15 09:34:21', 'usu_cpf');
+-- INSERT INTO tb_user (usu_nm, usu_psw, usu_email, usu_sobrenome, usu_data_nasc, usu_cpf) VALUES ('usu_nm', 'usu_psw', 'usu_email', 'usu_sobrenome', '2017-06-15 09:34:21', 'usu_cpf');
 
 -- SELECT * FROM tb_user;
