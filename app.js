@@ -12,6 +12,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
 app.use('/', require('./routes/index'));
+app.use('/user', require('./routes/user'));
 
 const port = process.env.PORT || 8888;
 
