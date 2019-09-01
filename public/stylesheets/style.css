@@ -1,8 +1,43 @@
 body {
-  padding: 50px;
+
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #f6f6f6 !important;
 }
 
 a {
   color: #00B7FF;
+}
+
+#caixa{
+  background-color:white;
+  margin: 0 auto;
+  min-height: 500px;
+  width: 40%;
+  padding: 20px;
+  box-shadow: rgba(0,0,0,0.45) 1px 1px 10px;
+  border-radius: 15px 15px;
+}
+
+#caixa .user{
+  font-size: 150px;
+  max-height: 30px;
+  margin: 0 auto;
+  display: block;
+}
+
+#caixa .btn {
+  margin: 0 auto;
+  display: block;
+}
+
+footer{
+  color:white;
+  bottom:0px;
+  height: 50px;
+  background:#212529;
+  padding: 3px;
+  margin-bottom: 0px;
+  position: absolute;
+  width: 100%;
+  text-shadow: 1px 1px 10px rgba(0,0,0,0.6);
 }
