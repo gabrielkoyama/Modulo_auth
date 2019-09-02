@@ -12,15 +12,6 @@ CREATE TABLE IF NOT EXISTS tb_user (
 	usu_cpf VARCHAR(50) NOT NULL
 );
 
--- MODULE - tabela intermediária
-CREATE TABLE IF NOT EXISTS tb_usu_module_permission(
-	mde_cd INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	mde_mod_cd INT NOT NULL,
-	mde_usu_cd INT NOT NULL,
-	FOREIGN KEY (mde_mod_cd) REFERENCES tb_module(mod_cd),
-	FOREIGN KEY (mde_usu_cd) REFERENCES tb_user(usu_cd)
-);
-
 -- MODULE - aplicacao
 CREATE TABLE IF NOT EXISTS tb_module (
 	mod_cd INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -29,6 +20,14 @@ CREATE TABLE IF NOT EXISTS tb_module (
 	mod_link VARCHAR(50)
 );
 
+-- MODULE - tabela intermediária
+CREATE TABLE IF NOT EXISTS tb_usu_module_permission(
+	mde_cd INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	mde_mod_cd INT NOT NULL,
+	mde_usu_cd INT NOT NULL,
+	FOREIGN KEY (mde_mod_cd) REFERENCES tb_module(mod_cd),
+	FOREIGN KEY (mde_usu_cd) REFERENCES tb_user(usu_cd)
+);
 -- ------------------- INSERTS MODULES ---------------------------
 	-- Module dashboard
 	INSERT INTO tb_module (mod_nm, mod_descricao, mod_link)

@@ -22,7 +22,7 @@ router.get('/findById/:id', function(req, res) {
 	}
 });
 
-router.post('/insert', function(req, res) {
+router.post('/insert', async function(req, res) {
 	var data = {
 		name: 		req.body.nome,
 		psw: 		req.body.senha,
@@ -31,10 +31,10 @@ router.post('/insert', function(req, res) {
 		data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
 		cpf: 		req.body.cpf
 	}
-	sql.insertOneUser(data, (err, response) => {
-		if(err) res.sendStatus(500);
-		else res.sendStatus(200);
-	});
+
+	let response = await sql.insertOneUser(data);
+	if(response.error) res.send('error')
+	else res.send('ok');
 });
 
 router.post('/delete', function(req, res) {
@@ -95,23 +95,35 @@ router.post('/login', function(req, res) {
 	}
 });
 
-// =============== PERMISSIONS =====================
-router.post('/', function(req, res){
+// =============== PERMISSIONS asdsad
+router.post('/setPermission', function(req, res){
 
 	if(req.body){
 		var data = {
 			id: req.body.id,
-			permission: req.body.permissions
+			permission: req.body.permission
 		}
 
-		sql.setPermissions(data, (err, response) => {
-			if(err) res.send(err);
-			else res.send(response); 
+		JSON.parse(data.permission).map(el => {
+			let promisse = sql.setPermissions(data.id, el)
+			promisse.then(
+				result => {console.log(result)},
+				error => {console.log(error)}
+			)
 		})
 
+		
 	}else {
 		res.send('err');
 	}
 
 })
+
+
+router.get('/teste', async function(req, res){
+
+	let testeCount = await sql.teste();
+	console.log(testeCount)
+})
+
 module.exports = router;

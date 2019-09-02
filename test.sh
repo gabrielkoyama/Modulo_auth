@@ -33,3 +33,11 @@
     # curl -X POST http://localhost:8888/module/delete -H "Content-Type: application/json" -d '{"id": 1}'
 
 # ======================================================
+
+# ========================== PERMISSION =============================
+
+    # curl -X POST http://localhost:8888/user/setPermission -H "Content-Type: application/json" -d '{"id": 1, }'
+
+# ======================================================
+
+
