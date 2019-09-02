@@ -4,14 +4,14 @@ const sql 		= require('../lib/sql');
 const router  	= express.Router();
 
 // =============== CRUD USERS =====================
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
 	sql.findAllUser( (err, response) => {
 		if(err) console.error(err);
 		res.send(response);
 	});
 });
 
-router.get('/findById/:id', function(req, res, next) {
+router.get('/findById/:id', function(req, res) {
 	if(req.params){
 		sql.findByIdUser( req.params.id, (err, response) => {
 			if(err) console.error(err);
@@ -22,7 +22,7 @@ router.get('/findById/:id', function(req, res, next) {
 	}
 });
 
-router.post('/insert', function(req, res, next) {
+router.post('/insert', function(req, res) {
 	var data = {
 		name: 		req.body.nome,
 		psw: 		req.body.senha,
@@ -37,7 +37,7 @@ router.post('/insert', function(req, res, next) {
 	});
 });
 
-router.post('/delete', function(req, res, next) {
+router.post('/delete', function(req, res) {
 	if(req.body){
 		console.log(req.body.id);
 		sql.deleteOneUser(req.body.id, function(err, response){
@@ -49,7 +49,7 @@ router.post('/delete', function(req, res, next) {
 	}
 });
 
-router.post('/edit', function(req, res, next) {
+router.post('/edit', function(req, res) {
 	if(req.body){
 		var data = {
 			id:  		req.body.id,
@@ -69,8 +69,8 @@ router.post('/edit', function(req, res, next) {
 	}
 });
 
-// =============== LOGIN =====================
-router.post('/login', function(req, res, next) {
+// ================== LOGIN ========================
+router.post('/login', function(req, res) {
 	if(req.body.email && req.body.senha){
 		sql.findByEmailUser(req.body.email, (err, response) => {
 			if(err) console.error(err);
@@ -95,8 +95,23 @@ router.post('/login', function(req, res, next) {
 	}
 });
 
-router.get('/teste', (req, res, next) => {
-	res.send('teste');
-})
+// =============== PERMISSIONS =====================
+router.post('/', function(req, res){
 
+	if(req.body){
+		var data = {
+			id: req.body.id,
+			permission: req.body.permissions
+		}
+
+		sql.setPermissions(data, (err, response) => {
+			if(err) res.send(err);
+			else res.send(response); 
+		})
+
+	}else {
+		res.send('err');
+	}
+
+})
 module.exports = router;

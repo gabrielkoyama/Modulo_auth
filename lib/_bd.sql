@@ -2,20 +2,27 @@
 CREATE DATABASE IF NOT EXISTS AUTH;
 USE AUTH;
 
-CREATE TABLE IF NOT EXISTS tb_user(
+CREATE TABLE IF NOT EXISTS tb_user (
 	usu_cd INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	usu_nm VARCHAR(50), 
 	usu_psw VARCHAR(64),
 	usu_email VARCHAR(50), 
 	usu_sobrenome VARCHAR(50),
 	usu_data_nasc TIMESTAMP,
-	usu_cpf VARCHAR(50) NOT NULL,
-	usu_module_permission INT NOT NULL, 
-	FOREIGN KEY (usu_module_permission) REFERENCES tb_module(mod_cd)
+	usu_cpf VARCHAR(50) NOT NULL
+);
+
+-- MODULE - tabela intermediária
+CREATE TABLE IF NOT EXISTS tb_usu_module_permission(
+	mde_cd INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	mde_mod_cd INT NOT NULL,
+	mde_usu_cd INT NOT NULL,
+	FOREIGN KEY (mde_mod_cd) REFERENCES tb_module(mod_cd),
+	FOREIGN KEY (mde_usu_cd) REFERENCES tb_user(usu_cd)
 );
 
 -- MODULE - aplicacao
-CREATE TABLE IF NOT EXISTS tb_module(
+CREATE TABLE IF NOT EXISTS tb_module (
 	mod_cd INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	mod_nm VARCHAR(50),
 	mod_descricao VARCHAR(64),
@@ -42,14 +49,12 @@ INSERT INTO tb_user (
 	usu_email, 
 	usu_sobrenome, 
 	usu_data_nasc, 
-	usu_cpf,
-	usu_module_permission) 
+	usu_cpf) 
 VALUES (
 	'gabriel', -- senha 123
 	'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 
 	'gabriel', -- email gabriel sem validacoes ainda
 	'alves', 
 	'2017-06-15 09:34:21', 
-	'123',
-	1);
+	'123');
 -- SELECT * FROM tb_user;
