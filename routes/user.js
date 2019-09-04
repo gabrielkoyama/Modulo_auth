@@ -4,11 +4,9 @@ const sql 		= require('../lib/sql');
 const router  	= express.Router();
 
 // =============== CRUD USERS =====================
-router.get('/', function(req, res) {
-	sql.findAllUser( (err, response) => {
-		if(err) console.error(err);
-		res.send(response);
-	});
+router.get('/', async function(req, res) {
+	let users = await sql.findAllUser() 
+	res.send(users);
 });
 
 router.get('/findById/:id', function(req, res) {
@@ -95,33 +93,19 @@ router.post('/login', function(req, res) {
 	}
 });
 
-// =============== PERMISSIONS asdsad
-router.post('/setPermission', function(req, res){
-
+router.post('/setPermission', async function(req, res){
 	if(req.body){
 		var data = {
 			id: req.body.id,
 			permission: req.body.permission
 		}
-
-		JSON.parse(data.permission).map(el => {
-			let promisse = sql.setPermissions(data.id, el)
-			promisse.then(
-				result => {console.log(result)},
-				error => {console.log(error)}
-			)
-		})
-
-		
+		let result = await sql.setPermissions(data)
 	}else {
 		res.send('err');
 	}
-
 })
 
-
 router.get('/teste', async function(req, res){
-
 	let testeCount = await sql.teste();
 	console.log(testeCount)
 })

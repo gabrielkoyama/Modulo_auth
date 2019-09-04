@@ -1,4 +1,4 @@
-# ========================== USER =============================
+========================== USER =============================
     
     # EDIT -- OK 
     # curl -X POST http://localhost:8888/user/edit -H "Content-Type: application/json" -d '{"id":1, "nome": "aaaaaa", "senha":"fa", "email": "asd@ads", "sobrenome": "sobrenome", "data_nasc": "12/02/0213", "cpf":"123"}'
@@ -41,3 +41,5 @@
 # ======================================================
 
 
+# set permission
+# curl -X POST http://localhost:8888/user/setPermission -H 'Content-Type: application/json' -d '{"id": 1, "permission": [1,2,3]}'
