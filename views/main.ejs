@@ -5,12 +5,21 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-     
+    <script src='/js/jquery.js'></script>
+    <script src='/js/bootstrap.min.js'></script>
   </head>
   <body>
     
-    <div></div>
-    <div class="container-fluid">
+    <div class="row">
+    <div class="col-lg-2 col-sm-12 menu"> 
+        <ul class="nav">
+          <li class="i1 text-center"> <i class="material-icons">account_circle</i></li>
+          <li class="i2">ITEM 2</li>
+          <li class="i2">LOGOUT</li>
+        </ul>
+    </div>
+
+    <div class="container-fluid col">
 
       <div class="bom-dia">
         <h3>Bom dia</h3>
@@ -20,8 +29,8 @@
         <table class="table table-hover">
           <thead>
               <tr>
+                <th></th>
                 <th>#</th>
-                <th>i</th>
                 <th>nome</th>
                 <th>e-mail</th>
                 <th>controle</th>
@@ -29,13 +38,13 @@
           </thead>
           <tbody>
             <tr>
-              <td>1</td>
               <td><i class="material-icons">account_circle</i></td>
+              <td>1</td>
               <td>Teste</td>
               <td>teste@gmail.com</td>
               <td>
-                <button class="btn btn-light btn-sm"><i class="material-icons">visibility</i></button>
-                <button class="btn btn-light btn-sm"><i class="material-icons">create</i></button>
+                <button class="btn btn-light btn-sm" onclick="show(1, 'view');"><i class="material-icons">visibility</i></button>
+                <button class="btn btn-light btn-sm" onclick="show(1, 'edit');"><i class="material-icons">create</i></button>
                 <button class="btn btn-light btn-sm"><i class="material-icons">delete_outline</i></button>
               </td>
             </tr>
@@ -44,6 +53,35 @@
       </div>
 
     </div>
+  </div>
+    <!-- User modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <script>
+      function show(uid, e) {
+        $('#exampleModalCenter').modal(
+          // options
+          )
+      }
+    </script>
 
   </body>
 </html>

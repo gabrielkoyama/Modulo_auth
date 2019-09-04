@@ -7,6 +7,49 @@ body {
 a {
   color: #00B7FF;
 }
+.menu{
+background-color:black;
+height: 100vh;
+width: 100%;
+padding-right: 0px !important;
+
+}
+.nav{
+  margin: 0 auto;
+  color: white;
+  width: 100%;
+}
+.nav li{
+  width: 100%;
+}
+.i1{
+  min-height: 200px;
+  margin-bottom: 20px;
+  font-size: 100px;
+  -webkit-transition: background-color 2s;
+  transition: background-color 0.5s ease;
+  
+}
+.i1 i{
+  font-size:100px;
+  
+}
+.i1:hover{
+  background-color: #f6f6f6 !important;
+  color:black;
+  
+}
+.i2{
+  min-height: 50px;
+  margin-bottom: 10px;
+  padding-left:20px;
+  -webkit-transition: background-color 2s;
+  transition: background-color 0.2s ease;
+  }
+  .i2:hover{
+    background-color: #f6f6f6 !important;
+    color:black;
+  }
 
 #caixa{
   background-color:white;
