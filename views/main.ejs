@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src='/js/jquery.js'></script>
     <script src='/js/bootstrap.min.js'></script>
+    <script src='/js/main.js'></script>
   </head>
   <body>
     
@@ -76,11 +77,41 @@
       </div>
 
     <script>
+
       function show(uid, e) {
         $('#exampleModalCenter').modal(
           // options
           )
       }
+
+      $(document).ready( () => {
+
+        // return id, nome, sobrenome, email FROM /user
+        p = {id: 1, nome: 1, sobrenome: 1, email: 1}
+
+        $.ajax({
+          url: '/user',
+          data: p,
+          type: 'GET',
+          success: function (data) {
+            console.log(data);
+            let elem = '';
+            $.each(data, (i, k) => {
+              elem += '<td><i class="material-icons">account_circle</i></td>';
+              elem += '<td>{0}</td>'.format(k.id);
+              elem += '<td>{0} {1}</td>'.format(k.nome, k.sobrenome);
+              elem += '<td>{0}</td>'.format(k.email);
+              elem += '<td>\
+                        <button class="btn btn-light btn-sm" onclick="show({0});"><i class="material-icons">visibility</i></button>\
+                        <button class="btn btn-light btn-sm" onclick="show({0});"><i class="material-icons">create</i></button>\
+                        <button class="btn btn-light btn-sm"><i class="material-icons">delete_outline</i></button>\
+                      </td>'.format(k.id, k.id);
+            });
+            $("#user_table tbody").html(elem);
+          }
+        })
+      });
+      
     </script>
 
   </body>
