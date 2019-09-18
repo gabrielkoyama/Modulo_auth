@@ -2,6 +2,8 @@ const path 			= require('path');
 const express 		= require('express');
 const bodyParser 	= require('body-parser');
 const app 			= express();
+const secureEnv 	= require('secure-env');
+global.env 			= secureEnv({secret:'msp'});
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

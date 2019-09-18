@@ -10,19 +10,15 @@ const router = express.Router();
 // funcionalidade para remover todos os modules
 // select * from tb_user, tb_module where usu_module_permission = mod_cd;
 
-router.get('/', function (req, res, next) {
-	sql.findAllModule((err, response) => {
-		if (err) console.error(err);
-		res.send(response);
-	});
+router.get('/', async function (req, res, next) {
+	let response= await sql.findAllModule()
+	res.send(response);
 });
 
-router.get('/findById/:id', function (req, res, next) {
+router.get('/findById/:id', async function (req, res, next) {
 	if (req.params) {
-		sql.findByIdModule(req.params.id, (err, response) => {
-			if (err) console.error(err);
-			res.send(response);
-		});
+		let response = await sql.findByIdModule(req.params.id)
+		res.send(response);
 	} else {
 		res.sendStatus(500);
 	}
@@ -39,19 +35,16 @@ router.post('/insert', function (req, res, next) {
 	});
 });
 
-router.post('/delete', function (req, res, next) {
+router.post('/delete', async function (req, res, next) {
 	if (req.body) {
-		console.log(req.body.id);
-		sql.deleteOneModule(req.body.id, function (err, response) {
-			if (err) console.error(err);
-			res.sendStatus(200);
-		});
+		let response = await sql.deleteOneModule(req.body.id)
+		res.sendStatus(200);
 	} else {
 		res.sendStatus(500);
 	}
 });
 
-router.post('/edit', function (req, res, next) {
+router.post('/edit', async function (req, res, next) {
 	if (req.body) {
 		var data = {
 			id: 			req.body.id,
@@ -59,10 +52,8 @@ router.post('/edit', function (req, res, next) {
 			descricao: 		req.body.descricao,
 			link: 			req.body.link,
 		}
-		sql.updateModule(data, function (err, response) {
-			if (err) console.error(err)
-			res.send(200);
-		});
+		let response = await sql.updateModule(data)
+		res.send(200);
 	} else {
 		res.send(500);
 	}

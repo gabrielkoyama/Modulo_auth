@@ -9,15 +9,11 @@ router.get('/', async function(req, res) {
 	res.send(users);
 });
 
-router.get('/findById/:id', function(req, res) {
+router.get('/findById/:id', async function(req, res) {
 	if(req.params){
-		sql.findByIdUser( req.params.id, (err, response) => {
-			if(err) console.error(err);
-			res.send(response);
-		});
-	}else{
-		res.sendStatus(500);
-	}
+		let user = await sql.findByIdUser(req.params.id);
+		res.send(user);
+	}else res.sendStatus(500)
 });
 
 router.post('/insert', async function(req, res) {
@@ -35,19 +31,16 @@ router.post('/insert', async function(req, res) {
 	else res.send('ok');
 });
 
-router.post('/delete', function(req, res) {
+router.post('/delete', async function(req, res) {
 	if(req.body){
-		console.log(req.body.id);
-		sql.deleteOneUser(req.body.id, function(err, response){
-			if(err) console.error(err);
-			res.sendStatus(200);
-		});
+		let response = await sql.deleteOneUser(req.body.id)
+		res.sendStatus(200);
 	}else{
 		res.sendStatus(500);
 	}
 });
 
-router.post('/edit', function(req, res) {
+router.post('/edit', async function(req, res) {
 	if(req.body){
 		var data = {
 			id:  		req.body.id,
@@ -58,36 +51,30 @@ router.post('/edit', function(req, res) {
 			data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
 			cpf: 		req.body.cpf
 		}
-		sql.updateUser(data, function(err, response){
-			if(err) console.error(err)
-			res.send(200);
-		});
+		let edit = await sql.updateUser(data)
+		res.send(200);
 	}else{
 		res.send(500);
 	}
 });
 
 // ================== LOGIN ========================
-router.post('/login', function(req, res) {
+router.post('/login', async function(req, res) {
 	if(req.body.email && req.body.senha){
-		sql.findByEmailUser(req.body.email, (err, response) => {
-			if(err) console.error(err);
-			else{
-				
-				// verifica se existe
-				if(response.length > 0){
 
-					// verifica se a senha esta correta
-					if(response[0].senha == sha256(req.body.senha)){
-						res.send('ok');
-					}else{
-						res.send('senha incorreta');
-					}
-				}else{
-					res.send('usuario nao existe');
-				}
+		let user = await sql.findByEmailUser(req.body.email);
+
+		if(user.length == 0){
+			res.send('usuario nao existe')
+		}else{
+			if(user[0].senha == sha256(req.body.senha)){
+				let allUsers = await sql.findAllUser();
+				console.log(allUsers);
+				res.render('main', {users: allUsers});
+			}else{
+				res.send('senha incorreta');
 			}
-		});
+		}
 	}else{
 		res.send('email e senha required!');
 	}

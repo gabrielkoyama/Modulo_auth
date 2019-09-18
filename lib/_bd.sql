@@ -57,3 +57,18 @@ VALUES (
 	'2017-06-15 09:34:21', 
 	'123');
 -- SELECT * FROM tb_user;
+
+INSERT INTO tb_user (
+	usu_nm, 
+	usu_psw, 
+	usu_email, 
+	usu_sobrenome, 
+	usu_data_nasc, 
+	usu_cpf) 
+VALUES (
+	'gustavo', -- senha 123
+	'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 
+	'gustavo@gmail.com', -- email gabriel sem validacoes ainda
+	'henrique', 
+	'2017-06-15 09:34:21', 
+	'12321983721');

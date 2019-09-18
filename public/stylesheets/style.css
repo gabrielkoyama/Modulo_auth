@@ -1,8 +1,136 @@
 body {
-  padding: 50px;
+
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #f6f6f6 !important;
 }
 
 a {
   color: #00B7FF;
+}
+.menu{
+background-color:black;
+height: 100vh;
+width: 100%;
+padding-right: 0px !important;
+}
+
+
+.nav{
+  margin: 0 auto;
+  color: white;
+  width: 100%;
+}
+.nav li{
+  width: 100%;
+}
+.i1{
+  height: 200px;
+  margin-bottom: 20px;
+  font-size: 100px;
+  -webkit-transition: background-color 2s;
+  transition: background-color 0.5s ease;
+  
+}
+.i1 i{
+  font-size:100px;
+  
+}
+.i1:hover{
+  background-color: #f6f6f6 !important;
+  color:black;
+  
+}
+.i2{
+  min-height: 50px;
+  margin-bottom: 10px;
+  padding-left:20px;
+  -webkit-transition: background-color 2s;
+  transition: background-color 0.2s ease;
+  }
+  .i2:hover{
+    background-color: #f6f6f6 !important;
+    color:black;
+  }
+  @media only screen and (max-width: 977px) {
+    .menu{
+      background-color:black;
+      height: auto;
+      width: 100%;
+      padding-right: 0px !important;
+      }
+      .nav li{
+        width: auto;
+        min-width: 70px;
+      }
+     
+      
+      .nav li .i2{
+        float: right;
+      }
+      .i1{
+      height: 50px;
+      margin-bottom: 0px !important;
+      font-size: 30px;
+      -webkit-transition: background-color 2s;
+      transition: background-color 0.5s ease;
+      
+      }
+      .i1 i{
+      font-size:45px;
+      
+      }
+      .i1:hover{
+      background-color: #f6f6f6 !important;
+      color:black;
+      
+      }
+      .i2{
+      min-height: 50px;
+      margin-bottom: 0px !important;
+      padding-left:20px;
+      -webkit-transition: background-color 2s;
+      transition: background-color 0.2s ease;
+      float: right !important;
+      }
+    .i2:hover{
+      background-color: #f6f6f6 !important;
+      color:black;
+    }
+  }
+.bom-dia{
+  margin-top:20px;
+  margin-bottom:10px;
+}
+#caixa{
+  background-color:white;
+  margin: 0 auto;
+  min-height: 500px;
+  width: 40%;
+  padding: 20px;
+  box-shadow: rgba(0,0,0,0.45) 1px 1px 10px;
+  border-radius: 15px 15px;
+}
+
+#caixa .user{
+  font-size: 150px;
+  max-height: 30px;
+  margin: 0 auto;
+  display: block;
+}
+
+#caixa .btn {
+  margin: 0 auto;
+  display: block;
+}
+
+footer{
+  color:white;
+  bottom:0px;
+  height: 50px;
+  background:#212529;
+  padding: 3px;
+  margin-bottom: 0px;
+  position: absolute;
+  width: 100%;
+  text-shadow: 1px 1px 10px rgba(0,0,0,0.6);
 }
