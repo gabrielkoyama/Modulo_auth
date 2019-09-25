@@ -15,7 +15,8 @@
     <div class="col-lg-2 col-sm-12 menu"> 
         <ul class="nav">
           <li class="i1 text-center"> <i class="material-icons">account_circle</i></li>
-          <li class="i2">ITEM 2</li>
+          <li class="i2" onclick="showInserirUser()">Inserir Usuário</li>
+          <li class="i2" onclick="showInserirModule()">Inserir Módulo</li>
           <li class="i2">LOGOUT</li>
         </ul>
     </div>
@@ -50,13 +51,13 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="modal-title">Modal title</h5>
+            <h5 class="modal-title" id="modal-title">Usuário</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <form action="/user/edit" method="POST">
+            <form id="form-user" action="/user/edit" method="POST">
             <!-- -->
 
             <div class="row">
@@ -67,37 +68,78 @@
 
                 <div class="row mb-1">
                   <div class="col-6">
-                    <input class="form-control" type="text" name="user_nome" id="user_nome" value="" placeholder="Nome" title="Nome">
+                    <input class="form-control" type="text" name="nome" id="nome" value="" placeholder="Nome" title="Nome">
                   </div>
                   <div class="col-6">
-                    <input class="form-control" type="text" name="user_sobrenome" id="user_sobrenome" value="" placeholder="Sobrenome" title="Sobrenome">
+                    <input class="form-control" type="text" name="sobrenome" id="sobrenome" value="" placeholder="Sobrenome" title="Sobrenome">
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-12 mb-1">
-                    <input class="form-control" type="text" name="user_email" id="user_email" value="" placeholder="E-mail">
+                    <input class="form-control" type="text" name="email" id="email" value="" placeholder="E-mail">
                   </div>
                   <div class="col-12 mb-1">
                     <span class="subtitle"></span>
-                    <input class="form-control" type="password" name="user_senha" id="user_senha" value="****" placeholder="****">
+                    <input class="form-control" type="password" name="senha" id="senha" value="****" placeholder="****">
                   </div>
                 </div>
 
               </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-12 mb-1">
+                <p class="subtitle text-muted">Módulos</p>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <select id="modules" class="" multiple>
+
+                  </select>
+                </div>
+              </div>
             </div>
 
           <!-- -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
           </form>
 
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
+          
         </div>
       </div>
     </div>
+
+    <!-- Module modal -->
+    <div class="modal fade" id="modalModule" tabindex="-1" role="dialog" aria-labelledby="modalModuleTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal-title">Módulo</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <form id="form-module" action="/module/insert" method="POST">
+              <!-- -->
+              <!-- -->
+              </form>
+  
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <script>
 
@@ -110,7 +152,7 @@
       function writeUserNoModal(user) {
         let elemento_ref = "";
         $.each(ids, (k, elem_form) => {
-          elemento_ref = "#user_" + elem_form;
+          elemento_ref = "#" + elem_form;
           if (elem_form !== "senha")
             $(elemento_ref).val(user[elem_form]);
         })
@@ -120,7 +162,7 @@
       function edit(uid) {
         let u = buscaUserId(uid, () => {
           $.each(ids, (k, elem_form) => {
-            $("#user_" + elem_form).prop("disabled", false);
+            $("#" + elem_form).prop("disabled", false);
           })
           showModal();
         });
@@ -129,13 +171,14 @@
       function show(uid) {
         let u = buscaUserId(uid, () => {
           $.each(ids, (k, elem_form) => {
-            $("#user_" + elem_form).prop("disabled", true);
+            $("#" + elem_form).prop("disabled", true);
           })
           showModal();
         });
       }
 
       function buscaUserId(uid, funcao) {
+        $("#form-user").attr('action', '/user/edit');
         $.ajax({
           url: '/user/findById/{0}'.format(uid),
           // args: {'id': uid},
@@ -152,6 +195,15 @@
         {
           $.ajax({url: '/user/delete', data: {id: uid}, type: 'POST', success: (data) => {console.log('Usuário deletado com sucesso.')}})
         }
+      }
+
+      function showInserirUser() {
+        $("#form-user").attr('action', '/user/insert');
+        showModal();
+      }
+
+      function showInserirModule() {
+        // 
       }
 
       $(document).ready( () => {
