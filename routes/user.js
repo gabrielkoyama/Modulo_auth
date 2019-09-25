@@ -70,10 +70,18 @@ router.post('/edit', async function(req, res) {
 			email:  	req.body.email,
 			sobrenome: 	req.body.sobrenome,
 			data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
-			cpf: 		req.body.cpf
+			cpf: 		req.body.cpf,
+			permission: req.body.permission
 		}
+
+		// update nas permissoes
+		let permDel 	= await sql.deletePermissionById(data.id);
+		let permUpdate 	= await sql.setPermissions({id: data.id, permission: data.permission});
+
 		let edit = await sql.updateUser(data)
-		res.send(200);
+
+		if(permDel.error || permUpdate.error || edit.error) res.sendStatus(500)
+		else res.send(200);
 	}else{
 		res.send(500);
 	}
