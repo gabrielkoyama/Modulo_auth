@@ -17,23 +17,44 @@ router.get('/findById/:id', async function(req, res) {
 });
 
 router.post('/insert', async function(req, res) {
-	var data = {
-		name: 		req.body.nome,
-		psw: 		req.body.senha,
-		email:  	req.body.email,
-		sobrenome: 	req.body.sobrenome,
-		data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
-		cpf: 		req.body.cpf
-	}
+	
+	if(req.body){
+		var data = {
+			name: 		req.body.nome,
+			psw: 		req.body.senha,
+			email:  	req.body.email,
+			sobrenome: 	req.body.sobrenome,
+			data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
+			cpf: 		req.body.cpf,
+			permission: req.body.permission
+		}
 
-	let response = await sql.insertOneUser(data);
-	if(response.error) res.send('error')
-	else res.send('ok');
+		// verifica mesmo e-mail
+		let verify = await sql.findByEmailUser(data.email);
+		if(verify.length > 0){
+			res.send('email ja existente');
+
+		}else{
+			// insere o usuario
+			let response = await sql.insertOneUser(data);
+		
+			//retorna o usuario cadastrado
+			let user = await sql.findByEmailUser(data.email);
+		
+			// seta permissoes
+			let perm = await sql.setPermissions({id:user[0].id, permission: data.permission});
+		
+			if(response.error || user.error || perm.error) res.send('error');
+			else res.send('ok');
+		}
+
+	}else res.send('err')
+
 });
 
 router.post('/delete', async function(req, res) {
 	if(req.body){
-		let response = await sql.deleteOneUser(req.body.id)
+		await sql.deleteOneUser(req.body.id)
 		res.sendStatus(200);
 	}else{
 		res.sendStatus(500);
@@ -90,11 +111,6 @@ router.post('/setPermission', async function(req, res){
 	}else {
 		res.send('err');
 	}
-})
-
-router.get('/teste', async function(req, res){
-	let testeCount = await sql.teste();
-	console.log(testeCount)
 })
 
 module.exports = router;
