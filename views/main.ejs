@@ -27,7 +27,7 @@
       </div>
 
       <div class="container lista">
-        <table class="table table-hover">
+        <table id="user_table" class="table table-hover">
           <thead>
               <tr>
                 <th></th>
@@ -38,19 +38,7 @@
               </tr>    
           </thead>
           <tbody>
-            <% users.forEach(function(user){ %>
-              <tr>
-                <td><i class="material-icons">account_circle</i></td>
-                <td><%= user.id %></td>
-                <td><%= user.nome %></td>
-                <td><%= user.email %></td>
-                <td>
-                  <button class="btn btn-light btn-sm" onclick="show(1, 'view');"><i class="material-icons">visibility</i></button>
-                  <button class="btn btn-light btn-sm" onclick="show(1, 'edit');"><i class="material-icons">create</i></button>
-                  <button class="btn btn-light btn-sm"><i class="material-icons">delete_outline</i></button>
-                </td>
-              </tr>
-            <% }) %>
+            
           </tbody>
         </table>
       </div>
@@ -59,31 +47,111 @@
   </div>
     <!-- User modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modal-title">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/user/edit" method="POST">
+            <!-- -->
+
+            <div class="row">
+              <div class="col-3">
+                  <i class="material-icons text-center">account_circle</i>
+              </div>
+              <div class="col">
+
+                <div class="row mb-1">
+                  <div class="col-6">
+                    <input class="form-control" type="text" name="user_nome" id="user_nome" value="" placeholder="Nome" title="Nome">
+                  </div>
+                  <div class="col-6">
+                    <input class="form-control" type="text" name="user_sobrenome" id="user_sobrenome" value="" placeholder="Sobrenome" title="Sobrenome">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12 mb-1">
+                    <input class="form-control" type="text" name="user_email" id="user_email" value="" placeholder="E-mail">
+                  </div>
+                  <div class="col-12 mb-1">
+                    <span class="subtitle"></span>
+                    <input class="form-control" type="password" name="user_senha" id="user_senha" value="****" placeholder="****">
+                  </div>
+                </div>
+
+              </div>
             </div>
-            <div class="modal-body">
-              ...
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+
+          <!-- -->
+          </form>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
+    </div>
 
     <script>
 
-      function show(uid, e) {
-        $('#exampleModalCenter').modal(
-          // options
-          )
+      const ids = ["nome", "sobrenome", "email", "senha"];
+
+      function showModal() {
+        $('#exampleModalCenter').modal();
+      }
+
+      function writeUserNoModal(user) {
+        let elemento_ref = "";
+        $.each(ids, (k, elem_form) => {
+          elemento_ref = "#user_" + elem_form;
+          if (elem_form !== "senha")
+            $(elemento_ref).val(user[elem_form]);
+        })
+        
+      }
+
+      function edit(uid) {
+        let u = buscaUserId(uid, () => {
+          $.each(ids, (k, elem_form) => {
+            $("#user_" + elem_form).prop("disabled", false);
+          })
+          showModal();
+        });
+      }
+
+      function show(uid) {
+        let u = buscaUserId(uid, () => {
+          $.each(ids, (k, elem_form) => {
+            $("#user_" + elem_form).prop("disabled", true);
+          })
+          showModal();
+        });
+      }
+
+      function buscaUserId(uid, funcao) {
+        $.ajax({
+          url: '/user/findById/{0}'.format(uid),
+          // args: {'id': uid},
+          success: (data) => {
+            data = data[0];
+            funcao();
+            writeUserNoModal(data);
+          }
+        })
+      }
+
+      function deleteUser(uid) {
+        if (confirm("Deseja excluir o usuário?"))
+        {
+          $.ajax({url: '/user/delete', data: {id: uid}, type: 'POST', success: (data) => {console.log('Usuário deletado com sucesso.')}})
+        }
       }
 
       $(document).ready( () => {
@@ -96,20 +164,19 @@
           data: p,
           type: 'GET',
           success: function (data) {
-            console.log(data);
-            let elem = '';
+            let res = '';
             $.each(data, (i, k) => {
-              elem += '<td><i class="material-icons">account_circle</i></td>';
-              elem += '<td>{0}</td>'.format(k.id);
-              elem += '<td>{0} {1}</td>'.format(k.nome, k.sobrenome);
-              elem += '<td>{0}</td>'.format(k.email);
-              elem += '<td>\
-                        <button class="btn btn-light btn-sm" onclick="show({0});"><i class="material-icons">visibility</i></button>\
-                        <button class="btn btn-light btn-sm" onclick="show({0});"><i class="material-icons">create</i></button>\
-                        <button class="btn btn-light btn-sm"><i class="material-icons">delete_outline</i></button>\
-                      </td>'.format(k.id, k.id);
+              res += '<tr><td><i class="material-icons">account_circle</i></td>';
+              res += '<td>{0}</td>'.format(k.id);
+              res += '<td>{0} {1}</td>'.format(k.nome, k.sobrenome);
+              res += '<td>{0}</td>'.format(k.email);
+              res += '<td>\
+                        <button class="btn btn-light btn-sm" onclick="show('+k.id+');"><i class="material-icons">visibility</i></button>\
+                        <button class="btn btn-light btn-sm" onclick="edit('+k.id+');"><i class="material-icons">create</i></button>\
+                        <button class="btn btn-light btn-sm" onclick="deleteUser('+k.id+')"><i class="material-icons">delete_outline</i></button>\
+                      </td></tr>';
             });
-            $("#user_table tbody").html(elem);
+            $("#user_table tbody").html(res);
           }
         })
       });
