@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+  <% include ./head %>
+
+  <body style="overflow-x: hidden">
+    
+  <div class="row">
+
+    <!-- sidebar -->
+    <% include ./sidebar %>
+    
+    <!-- content -->
+    <div class="container-fluid col-lg-10 col-md-10 col-sm-12">
+
+      <div class="bom-dia mb-5">
+        <h3>Olá <%= user %> <i class="float-right fa fa-sign-out mr-3" onclick="location.href='/login/sign-out'" style="cursor: pointer"></i></h3>
+        <hr>
+      </div>
+
+      <!-- list users -->
+      <div class="container lista">
+        <h5>Modulos cadastrados <button class="btn btn-sm btn-success float-right" onclick="modules.newModule()"> Novo</button></h5>
+        <table id="user_table" class="table table-hover ">
+          <thead>
+              <tr>
+                <th></th>
+                <th>#</th>
+                <th>nome</th>
+                <th>Descrição</th>
+                <th>Link</th>
+                <th></th>
+              </tr>    
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <% include ./module-modal %>
+
+  </div>
+  </body>
+
+  <script>
+    
+      var modules = {
+        newModule: function(){
+          modules.clearModal();
+          $('.add').attr('onclick', 'modules.add()')
+          if($('.modal-footer').hasClass('d-none')) $('.modal-footer').removeClass('d-none')
+          $('#moduleModal').modal()
+        },
+        clearModal: function(){
+          $('#moduleNameForm').val('');
+          $('#moduleNameForm').removeAttr('disabled');
+
+          $('#moduleDescForm').val('');
+          $('#moduleDescForm').removeAttr('disabled');
+
+          $('#moduleLinkForm').val('');
+          $('#moduleLinkForm').removeAttr('disabled');
+
+          $('#moduleModal').modal('hide');
+        },
+        deleteModule: function(id){
+          $.get('/module/deleteById/' + id)
+            .done(res => {
+              modules.table();
+            })
+            .fail(err => {
+              console.log('err')
+            })
+        },
+        feedModal: function(data, opc){
+          $('#moduleIdForm').val(data.id);
+          $('#moduleNameForm').val(data.nome);
+          $('#moduleDescForm').val(data.descricao);
+          $('#moduleLinkForm').val(data.link);
+
+          if(opc.includes('edit')){
+            $('#moduleNameForm').removeAttr('disabled');
+            $('#moduleDescForm').removeAttr('disabled');
+            $('#moduleLinkForm').removeAttr('disabled');
+            $('.modal-footer').removeClass('d-none');
+            $('.add').attr('onclick', 'modules.edit('+data.id+')')
+          }
+          if(opc.includes('view')){
+            $('#moduleNameForm').attr('disabled', 'disabled');
+            $('#moduleDescForm').attr('disabled', 'disabled');
+            $('#moduleLinkForm').attr('disabled', 'disabled');
+            $('.modal-footer').addClass('d-none');
+          }
+
+          $('#moduleModal').modal('show');
+        },
+        add: function(){
+          var data = {
+            nome: $('#moduleNameForm').val(),
+            descricao: $('#moduleDescForm').val(),
+            link: $('#moduleLinkForm').val()
+          }
+
+          $.post('/module/insert', data)
+            .done(res => {
+              modules.clearModal()
+              modules.table()
+            })
+            .fail(err => {
+              modules.clearModal()
+              alert('Erro')
+            })
+        },
+        table: function(){
+          p = {
+            id: 1,
+            nome: 1,
+            descricao: 1,
+            link: 1
+          }
+          $.ajax({
+            url: '/module/getModules',
+            data: p,
+            type: 'GET',
+            success: function (data) {
+              let res = '';
+              $.each(data, (i, k) => {
+                res += '<tr><td><i class="fa fa-desktop"></i></td>';
+                res += '<td>{0}</td>'.format(k.id);
+                res += '<td>{0}</td>'.format(k.nome);
+                res += '<td>{0}</td>'.format(k.descricao);
+                res += '<td>{0}</td>'.format(k.link);
+                res += '<td>\
+                      <button class="btn btn-light btn-sm" onclick="modules.show(' + k.id + ');"><i class="material-icons">visibility</i></button>\
+                      <button class="btn btn-light btn-sm" onclick="modules.showEditModal(' + k.id + ');"><i class="material-icons">create</i></button>\
+                      <button class="btn btn-light btn-sm" onclick="modules.deleteModule(' + k.id + ')"><i class="material-icons">delete_outline</i></button>\
+                    </td></tr>';
+              });
+              $("#user_table tbody").html(res);
+            }
+          })
+        },
+        show: function(id){
+          $.get('/module/getById/' + id)
+            .done(res => {
+              modules.feedModal(res[0], 'view')
+            })
+            .fail(err => {
+              console.log('err')
+            })
+        },
+        showEditModal: function(id){
+          $.get('/module/getById/' + id)
+            .done(res => {
+              modules.feedModal(res[0], 'edit')
+            })
+            .fail(err => {})
+        },
+        edit: function(data){
+          var data = {
+            id: $('#moduleIdForm').val(),
+            nome: $('#moduleNameForm').val(),
+            descricao: $('#moduleDescForm').val(),
+            link: $('#moduleLinkForm').val()
+          }
+
+          $.post('/module/edit', data).done(res => {
+            modules.clearModal()
+            modules.table()
+          })
+          .fail(err => {
+            alert('err');
+          })
+        }
+      }
+      modules.table();
+
+  </script>
+</html>

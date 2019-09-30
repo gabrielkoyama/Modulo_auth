@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+  <% include ./head %>
+
+  <body style="overflow-x: hidden">
+    
+  <div class="row">
+
+    <!-- sidebar -->
+    <% include ./sidebar %>
+  
+    <!-- content -->
+    <div class="container-fluid col-lg-10 col-md-10 col-sm-12">
+
+      <div class="bom-dia mb-5">
+        <h3>Olá <%= user %> <i class="float-right fa fa-sign-out mr-3" onclick="location.href='/login/sign-out'" style="cursor: pointer"></i></h3>
+        <hr>
+      </div>
+
+      <!-- list users -->
+      <div class="container lista">
+        <h5>Usuarios cadastrados <button class="btn btn-sm btn-success float-right" onclick="showInserirUser()"> Novo</button></h5>
+        
+        <table id="user_table" class="table table-hover ">
+          <thead>
+              <tr>
+                <th></th>
+                <th>#</th>
+                <th>nome</th>
+                <th>e-mail</th>
+                <th>controle</th>
+              </tr>    
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+
+    <% include ./user-modal %>
+
+  </div>
+  
+    <script>
+
+      const ids = ["nome", "sobrenome", "email", "senha"];
+
+      function showModal() {
+        $('#userModal').modal();
+      }
+
+      function writeUserNoModal(user) {
+        let elemento_ref = "";
+        $.each(ids, (k, elem_form) => {
+          elemento_ref = "#" + elem_form;
+          if (elem_form !== "senha")
+            $(elemento_ref).val(user[elem_form]);
+        })
+        
+      }
+
+      function edit(uid) {
+        let u = buscaUserId(uid, () => {
+          $.each(ids, (k, elem_form) => {
+            $("#" + elem_form).prop("disabled", false);
+          })
+          showModal();
+        });
+      }
+
+      function show(uid) {
+        let u = buscaUserId(uid, () => {
+          $.each(ids, (k, elem_form) => {
+            $("#" + elem_form).prop("disabled", true);
+          })
+          showModal();
+        });
+      }
+
+      function buscaUserId(uid, funcao) {
+        $("#form-user").attr('action', '/user/edit');
+        $.ajax({
+          url: '/user/findById/{0}'.format(uid),
+          // args: {'id': uid},
+          success: (data) => {
+            data = data[0];
+            funcao();
+            writeUserNoModal(data);
+          }
+        })
+      }
+
+      function deleteUser(uid) {
+        if (confirm("Deseja excluir o usuário?"))
+        {
+          $.ajax({url: '/user/delete', data: {id: uid}, type: 'POST', success: (data) => { atualizaUserTable()  }})
+        }
+      }
+
+      function showInserirUser() {
+        $("#form-user").attr('action', '/user/insert');
+        showModal();
+      }
+
+      function showInserirModule() {
+        // $("#form-user").attr('action', '/user/insert');
+        showModal();
+      }
+      var modules=[];
+
+      $(document).ready( () => {
+
+        // return id, nome, sobrenome, email FROM /user
+        p = {id: 1, nome: 1, sobrenome: 1, email: 1}
+
+        $.ajax({
+          url: '/user/getUsers',
+          data: p,
+          type: 'GET',
+          success: function (data) {
+            let res = '';
+            $.each(data, (i, k) => {
+              res += '<tr><td><i class="material-icons">account_circle</i></td>';
+              res += '<td>{0}</td>'.format(k.id);
+              res += '<td>{0} {1}</td>'.format(k.nome, k.sobrenome);
+              res += '<td>{0}</td>'.format(k.email);
+              res += '<td>\
+                        <button class="btn btn-light btn-sm" onclick="show('+k.id+');"><i class="material-icons">visibility</i></button>\
+                        <button class="btn btn-light btn-sm" onclick="edit('+k.id+');"><i class="material-icons">create</i></button>\
+                        <button class="btn btn-light btn-sm" onclick="deleteUser('+k.id+')"><i class="material-icons">delete_outline</i></button>\
+                      </td></tr>';
+            });
+            $("#user_table tbody").html(res);
+          }
+        })
+
+        $.get('/module/getAll').done(res=> { 
+          var htm='';
+          res.map(el => {
+            htm += '<tr>';
+            htm += `<td><input type="checkbox" name=${el.id}></td>`;
+            htm += `<td>${el.nome}</td>`;
+            htm += `<td>${el.descricao}</td>`;
+            htm += '</tr>';
+          })
+          $('.modulesPermissionTable').html(htm)
+        })
+
+      });
+
+      function atualizaUserTable(){
+        // return id, nome, sobrenome, email FROM /user
+        p = {id: 1, nome: 1, sobrenome: 1, email: 1}
+
+        $.ajax({
+          url: '/user/getUsers',
+          data: p,
+          type: 'GET',
+          success: function (data) {
+            let res = '';
+            $.each(data, (i, k) => {
+              res += '<tr><td><i class="material-icons">account_circle</i></td>';
+              res += '<td>{0}</td>'.format(k.id);
+              res += '<td>{0} {1}</td>'.format(k.nome, k.sobrenome);
+              res += '<td>{0}</td>'.format(k.email);
+              res += '<td>\
+                        <button class="btn btn-light btn-sm" onclick="show('+k.id+');"><i class="material-icons">visibility</i></button>\
+                        <button class="btn btn-light btn-sm" onclick="edit('+k.id+');"><i class="material-icons">create</i></button>\
+                        <button class="btn btn-light btn-sm" onclick="deleteUser('+k.id+')"><i class="material-icons">delete_outline</i></button>\
+                      </td></tr>';
+            });
+            $("#user_table tbody").html(res);
+          }
+        })
+      }
+      
+    </script>
+
+  </body>
+</html>

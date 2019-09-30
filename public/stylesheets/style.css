@@ -4,6 +4,11 @@ body {
   background-color: #f6f6f6 !important;
 }
 
+.table-modules {
+  line-height: 0.5;
+  font-size: 13px;
+}
+
 a {
   color: #00B7FF;
 }
@@ -26,6 +31,7 @@ padding-right: 0px !important;
 .i1{
   height: 200px;
   margin-bottom: 20px;
+  font-weight: 600;
   font-size: 100px;
   -webkit-transition: background-color 2s;
   transition: background-color 0.5s ease;
@@ -40,7 +46,17 @@ padding-right: 0px !important;
   color:black;
   
 }
+
+.i2-active {
+    cursor: pointer;
+    background-color: #f6f6f6 !important;
+    color:black;
+}
+
 .i2{
+  font-weight: 600;
+  margin-bottom: 0px !important;
+  line-height: 3;
   min-height: 50px;
   margin-bottom: 10px;
   padding-left:20px;
@@ -48,6 +64,7 @@ padding-right: 0px !important;
   transition: background-color 0.2s ease;
   }
   .i2:hover{
+    cursor: pointer;
     background-color: #f6f6f6 !important;
     color:black;
   }

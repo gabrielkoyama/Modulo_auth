@@ -1,0 +1,15 @@
+<div class="col-lg-2 col-sm-12 menu"> 
+    <ul class="nav">
+      <li class="i1 text-center"> <i class="material-icons">account_circle</i></li>
+      <li class="i2 dashboard" onclick="location.href='/dashboard'">Home</li>
+      <li class="i2 user" onclick="location.href='/user'">Usuarios</li>
+      <li class="i2 module" onclick="location.href='/module'">Módulos</li>
+      <!-- <li class="i2">LOGOUT</li> -->
+    </ul>
+</div>
+
+<script>
+if(window.location.href.includes('dashboard')) $('.dashboard').addClass('i2-active')
+if(window.location.href.includes('user')) $('.user').addClass('i2-active')
+if(window.location.href.includes('module')) $('.module').addClass('i2-active')
+</script>
