@@ -19,6 +19,7 @@ app.use('/', require('./routes/indexRoutes'));
 app.use('/login', require('./routes/loginRoutes'));
 app.use('/user', require('./routes/userRoutes'));
 app.use('/module', require('./routes/moduleRoutes'));
+app.use('/middleware', require('./routes/moduleRoutes'));
 
 const port = process.env.PORT || 8888;
 
