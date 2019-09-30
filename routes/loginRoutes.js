@@ -12,9 +12,7 @@ router.get('/', function(req, res) {
 // sign in
 router.post('/sign-in', async function(req, res) {
 	if(req.body.email && req.body.senha){
-
 		let user = await sql.findByEmailUser(req.body.email);
-
 		if(user.length == 0){
 			res.send('usuario nao existe')
 		}else{
@@ -24,7 +22,7 @@ router.post('/sign-in', async function(req, res) {
 					email: user[0].email
 				}
 				userToken =	jwt.sign(data, process.env.PASS_JWT);
-				res.redirect('/dashboard');
+				res.redirect('/middleware');
 			}else{
 				res.send('senha incorreta');
 			}

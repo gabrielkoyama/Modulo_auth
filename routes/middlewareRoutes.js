@@ -6,4 +6,5 @@ router.get('/', auth, function(req, res, next) {
 	res.render('apps');
 });
 
+
 module.exports = router;

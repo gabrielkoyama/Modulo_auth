@@ -1,5 +1,7 @@
 const express = require('express');
 const sql = require('../lib/sql');
+const {auth}	= require('../lib/auth');
+
 const router = express.Router();
 
 router.get('/',auth, async function (req, res) {
