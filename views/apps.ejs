@@ -1,13 +1,41 @@
 <!DOCTYPE html>
 <html>
 
-  <% include ./head %>
+    <head>
+        <title>Login</title>
+        <link rel='stylesheet' href='/stylesheets/dashboard.css' />
+        <link rel='stylesheet' href='/stylesheets/font-awesome.min.css' />
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src='/js/jquery.js'></script>
+        <script src='/js/bootstrap.min.js'></script>
+        <script src='/js/main.js'></script>
+    </head>
 
-  <body>
+  <body style="overflow-x: hidden; background-color: #eceef2 !important">
   <div class="row">
+
     <div class="container-fluid col-lg-10 col-md-10 col-sm-12">
-        <div class="row">
-            <h1>apps</h1>
+        <div class="container text-center mt-5">
+          <img src="/img/Logo_Visiona.png" width="200px" alt="">
+        </div>
+        <div class="row col-md-10 offset-md-1">
+            <div class="col-md-12 row mt-5">
+                  <% apps.forEach((el) => { %>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4" onclick="location.href ='<%= el.moduleLink %>'" style="cursor: pointer">
+                      <div class="card card-middleware" style="border-radius: 0px !important">
+                      <div class="content text-center">
+                        <div class="icon-big">
+                          <i class="fa fa-desktop mr-3"></i>
+                          <h5><%= el.moduleName %></h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <% }) %>
+            </div>
+          </div>
         </div>
     </div>
   </body>

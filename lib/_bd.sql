@@ -72,3 +72,35 @@ VALUES (
 	'henrique', 
 	'2017-06-15 09:34:21', 
 	'12321983721');
+
+
+-- ADICIONANDO PERMISSAO TESTE
+
+	-- DASHBOARD
+	INSERT INTO tb_usu_module_permission (
+		mde_mod_cd,
+		mde_usu_cd)
+	VALUES (
+		21, -- gabriel
+		1
+	);
+
+	-- MODULE1
+	INSERT INTO tb_usu_module_permission (
+		mde_mod_cd,
+		mde_usu_cd)
+	VALUES (
+		22, -- gabriel
+		1
+	);
+
+	-- MODULE2 
+	INSERT INTO tb_usu_module_permission (
+		mde_mod_cd,
+		mde_usu_cd)
+	VALUES (
+		23, -- gabriel
+		1
+	);
+
+SELECT m.mod_nm as moduleName, m.mod_link as moduleLink, u.usu_nm as userNome, u.usu_email as userEmail FROM tb_usu_module_permission as ump, tb_user as u, tb_module as m where ump.mde_usu_cd = u.usu_cd and m.mod_cd = ump.mde_mod_cd and u.usu_cd = 1;

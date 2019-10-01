@@ -2,10 +2,11 @@ const express = require('express');
 const sql = require('../lib/sql');
 const {auth}	= require('../lib/auth');
 
+
 const router = express.Router();
 
-router.get('/',auth, async function (req, res) {
-	res.render('module', {user: 'Admin'})
+router.get('/', auth, async function (req, res) {
+	res.render('dashboard/module', {user: 'Admin'})
 });
 
 router.get('/findById/:id',auth, async function (req, res) {
@@ -80,6 +81,11 @@ router.get('/getAll',auth, async function (req, res) {
 	if(response.error) res.sendStatus(500)
 	else res.send(response);
 
+})
+
+router.get('/getTotalModules',auth, async (req, res, next) => {
+	let m = await sql.infoBoxesModules(); 
+	res.send(m)
 })
 
 

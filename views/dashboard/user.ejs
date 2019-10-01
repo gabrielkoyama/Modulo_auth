@@ -13,7 +13,7 @@
     <div class="container-fluid col-lg-10 col-md-10 col-sm-12">
 
       <div class="bom-dia mb-5">
-        <h3>Olá <%= user %> <i class="float-right fa fa-sign-out mr-3" onclick="location.href='/login/sign-out'" style="cursor: pointer"></i></h3>
+        <h3>Olá <%= user %> <i class="float-right fa fa-sign-out mr-3" onclick="location.href='/dashboard/login/sign-out'" style="cursor: pointer"></i></h3>
         <hr>
       </div>
 
@@ -26,9 +26,9 @@
               <tr>
                 <th></th>
                 <th>#</th>
-                <th>nome</th>
-                <th>e-mail</th>
-                <th>controle</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th></th>
               </tr>    
           </thead>
           <tbody>
@@ -82,7 +82,7 @@
       function buscaUserId(uid, funcao) {
         $("#form-user").attr('action', '/user/edit');
         $.ajax({
-          url: '/user/findById/{0}'.format(uid),
+          url: '/dashboard/user/findById/{0}'.format(uid),
           // args: {'id': uid},
           success: (data) => {
             data = data[0];
@@ -95,7 +95,7 @@
       function deleteUser(uid) {
         if (confirm("Deseja excluir o usuário?"))
         {
-          $.ajax({url: '/user/delete', data: {id: uid}, type: 'POST', success: (data) => { atualizaUserTable()  }})
+          $.ajax({url: '/dashboard/user/delete', data: {id: uid}, type: 'POST', success: (data) => { atualizaUserTable()  }})
         }
       }
 
@@ -116,7 +116,7 @@
         p = {id: 1, nome: 1, sobrenome: 1, email: 1}
 
         $.ajax({
-          url: '/user/getUsers',
+          url: '/dashboard/user/getUsers',
           data: p,
           type: 'GET',
           success: function (data) {
@@ -136,7 +136,7 @@
           }
         })
 
-        $.get('/module/getAll').done(res=> { 
+        $.get('/dashboard/module/getAll').done(res=> { 
           var htm='';
           res.map(el => {
             htm += '<tr>';
@@ -155,7 +155,7 @@
         p = {id: 1, nome: 1, sobrenome: 1, email: 1}
 
         $.ajax({
-          url: '/user/getUsers',
+          url: '/dashboard/user/getUsers',
           data: p,
           type: 'GET',
           success: function (data) {

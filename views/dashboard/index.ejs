@@ -14,13 +14,13 @@
     <div class="container-fluid col-lg-10 col-md-10 col-sm-12">
 
       <div class="bom-dia mb-5">
-        <h3>Olá <%= user %> <i class="float-right fa fa-sign-out mr-3" onclick="location.href='/login/sign-out'" style="cursor: pointer"></i> </h3>
+        <h3>Olá <%= user %> <i class="float-right fa fa-sign-out mr-5" onclick="location.href='/dashboard/login/sign-out'" style="cursor: pointer"></i> <span class="float-right mr-4" onclick="location.href='/dashboard/middleware'" style="font-size: 24px;cursor: pointer;">Middleware</span> </h3>
         <hr>
       </div>
 
       <div class="row">
 
-        <div class="col-lg-3 col-sm-6 offset-md-3" onclick="location.href='/user'" style="cursor: pointer">
+        <div class="col-lg-3 col-sm-6 offset-md-3" onclick="location.href='/dashboard/user'" style="cursor: pointer">
             <div class="card">
                 <div class="content">
                     <div class="row">
@@ -28,7 +28,7 @@
                           <div class="number ml-5">
                               <h3>
                               </h3>
-                              <h3>15</h3>
+                              <h3 class="userTotal">15</h3>
                               <small>Users</small>
                             </div>
                       </div>
@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <div class="col-lg-3 col-sm-6" onclick="location.href='/module'" style="cursor: pointer">
+        <div class="col-lg-3 col-sm-6" onclick="location.href='/dashboard/module'" style="cursor: pointer">
           <div class="card">
               <div class="content">
                   <div class="row">
@@ -50,7 +50,7 @@
                         <div class="number ml-5">
                             <h3>
                             </h3>
-                            <h3>15</h3>
+                            <h3 class="moduleTotal">15</h3>
                             <small>Modules</small>
                           </div>
                     </div>
@@ -64,6 +64,19 @@
           </div>
       </div>
   </div>
+
+  <script>
+
+    $(function(){
+      $.get('/dashboard/user/getTotalUsers').done(res => {
+        $('.userTotal').html(res[0].total)
+      })
+  
+      $.get('/dashboard/module/getTotalModules').done(res => {
+        $('.moduleTotal').html(res[0].total)
+      })
+    })
+  </script>
   
   </body>
 </html>

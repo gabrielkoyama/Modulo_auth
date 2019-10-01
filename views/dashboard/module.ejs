@@ -14,7 +14,7 @@
     <div class="container-fluid col-lg-10 col-md-10 col-sm-12">
 
       <div class="bom-dia mb-5">
-        <h3>Olá <%= user %> <i class="float-right fa fa-sign-out mr-3" onclick="location.href='/login/sign-out'" style="cursor: pointer"></i></h3>
+        <h3>Olá <%= user %> <i class="float-right fa fa-sign-out mr-3" onclick="location.href='/dashboard/login/sign-out'" style="cursor: pointer"></i></h3>
         <hr>
       </div>
 
@@ -26,7 +26,7 @@
               <tr>
                 <th></th>
                 <th>#</th>
-                <th>nome</th>
+                <th>Nome</th>
                 <th>Descrição</th>
                 <th>Link</th>
                 <th></th>
@@ -66,7 +66,7 @@
           $('#moduleModal').modal('hide');
         },
         deleteModule: function(id){
-          $.get('/module/deleteById/' + id)
+          $.get('/dashboard/module/deleteById/' + id)
             .done(res => {
               modules.table();
             })
@@ -121,7 +121,7 @@
             link: 1
           }
           $.ajax({
-            url: '/module/getModules',
+            url: '/dashboard/module/getModules',
             data: p,
             type: 'GET',
             success: function (data) {
@@ -143,7 +143,7 @@
           })
         },
         show: function(id){
-          $.get('/module/getById/' + id)
+          $.get('/dashboard/module/getById/' + id)
             .done(res => {
               modules.feedModal(res[0], 'view')
             })
@@ -152,7 +152,7 @@
             })
         },
         showEditModal: function(id){
-          $.get('/module/getById/' + id)
+          $.get('/dashboard/module/getById/' + id)
             .done(res => {
               modules.feedModal(res[0], 'edit')
             })
@@ -166,7 +166,7 @@
             link: $('#moduleLinkForm').val()
           }
 
-          $.post('/module/edit', data).done(res => {
+          $.post('/dashboard/module/edit', data).done(res => {
             modules.clearModal()
             modules.table()
           })

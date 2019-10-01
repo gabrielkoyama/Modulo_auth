@@ -18,11 +18,12 @@ router.post('/sign-in', async function(req, res) {
 		}else{
 			if(user[0].senha == sha256(req.body.senha)){
 				data = {
+					id: user[0].id,
 					nome: user[0].nome,
 					email: user[0].email
 				}
 				userToken =	jwt.sign(data, process.env.PASS_JWT);
-				res.redirect('/middleware');
+				res.redirect('/dashboard/middleware');
 			}else{
 				res.send('senha incorreta');
 			}

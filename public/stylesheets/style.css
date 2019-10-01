@@ -4,6 +4,10 @@ body {
   background-color: #f6f6f6 !important;
 }
 
+.card-middleware:hover {
+  background-color: #e8e8e8 !important
+}
+
 .table-modules {
   line-height: 0.5;
   font-size: 13px;

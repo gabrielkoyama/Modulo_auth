@@ -1,13 +1,13 @@
 const express 	= require('express');
 const sql 		= require('../lib/sql');
-const {auth}	= require('../lib/auth');
+const {auth, basicAuth}	= require('../lib/auth');
 
 const router  	= express.Router();
 
 
 // =============== CRUD USERS =====================
 router.get('/', auth, async function(req, res) {
-	res.render('user', {user:'Admin'});
+	res.render('dashboard/user', {user:'Admin'});
 });
 
 router.get('/findById/:id',auth, async function(req, res) {
@@ -52,7 +52,7 @@ router.post('/insert', auth,async function(req, res) {
 			let perm = await sql.setPermissions({id:user[0].id, permission: data.permission});
 		
 			if(response.error || user.error || perm.error) res.send('error');
-			else res.redirect('/user');
+			else res.redirect('/dashboard/user');
 		}
 
 	}else res.send('err')
@@ -108,6 +108,12 @@ router.post('/setPermission',auth, async function(req, res){
 
 router.get('/getUsers',auth, async (req, res, next) => {
 	let users = await sql.findAllUser() 
+	res.send(users)
+})
+
+
+router.get('/getTotalUsers',auth, async (req, res, next) => {
+	let users = await sql.infoBoxesUsers() 
 	res.send(users)
 })
 
