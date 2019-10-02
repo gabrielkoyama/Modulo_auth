@@ -20,12 +20,10 @@ router.get('/findById/:id',auth, async function(req, res) {
 router.post('/insert', auth,async function(req, res) {
 	
 	if(req.body){
-
-		var auxArrayPermissions=[]
+		var auxArrayPermissions = [];
 		Object.keys(req.body).map(el => {
 			if(req.body[el].includes("on")) auxArrayPermissions.push(el)
 		})
-
 		var data = {
 			name: 		req.body.nome,
 			psw: 		req.body.senha,
@@ -33,7 +31,7 @@ router.post('/insert', auth,async function(req, res) {
 			sobrenome: 	req.body.sobrenome,
 			data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
 			cpf: 		req.body.cpf,
-			permission: auxArrayPermissions
+			permission: auxArrayPermissions || req.body.permissions
 		}
 
 		// verifica mesmo e-mail
@@ -58,6 +56,17 @@ router.post('/insert', auth,async function(req, res) {
 	}else res.send('err')
 
 });
+
+router.post('/getModulesFromUser', auth, async (req, res) => {
+	if (req.body) {
+		let modules = await sql.findUserModuleByUserId(req.body.id);
+		res.send(modules);
+	}
+	else
+	{
+		res.sendStatus(500);
+	}
+})
 
 router.post('/delete',auth, async function(req, res) {
 	if(req.body){
