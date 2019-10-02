@@ -81,7 +81,7 @@ VALUES (
 		mde_mod_cd,
 		mde_usu_cd)
 	VALUES (
-		21, -- gabriel
+		1, -- gabriel
 		1
 	);
 
@@ -90,7 +90,7 @@ VALUES (
 		mde_mod_cd,
 		mde_usu_cd)
 	VALUES (
-		22, -- gabriel
+		2, -- gabriel
 		1
 	);
 
@@ -99,7 +99,7 @@ VALUES (
 		mde_mod_cd,
 		mde_usu_cd)
 	VALUES (
-		23, -- gabriel
+		3, -- gabriel
 		1
 	);
 

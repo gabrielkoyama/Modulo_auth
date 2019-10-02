@@ -45,7 +45,7 @@
   
     <script>
 
-      const ids = ["nome", "sobrenome", "email", "senha"];
+      const ids = ["id", "nome", "sobrenome", "email", "senha"];
 
       function showModal() {
         $('#userModal').modal();
@@ -81,8 +81,12 @@
       }
 
       function writeUserModules(uid) {
-        let url = uid === null ? '/dashboard/module/getModules' : '/dashboard/user/getModulesFromUser';
-        let type = uid === null ? 'GET' : 'POST';
+        let t = uid === null;
+        let url = t ? '/dashboard/module/getModules' : '/dashboard/user/getModulesFromUser';
+        let type = t ? 'GET' : 'POST';
+        let id_field = t ? 'id' : 'mod_id';
+        let name_field = t ? 'nome' : 'moduleName';
+        let link_field = t ? 'link' : 'module';
         $.ajax({
           url: url,
           data: {id: uid},
@@ -91,9 +95,9 @@
             let elems = '';
             $.each(data, (k, v) => {
               elems += '<tr>';
-              elems += '<td><input class="form-check-input" type="checkbox" id="mod_{0}" name="permissions"></td>'.format(v.mod_id);
-              elems += '<td>{0}</td>'.format(v.moduleName);
-              elems += '<td><a href="{0}" alt="Acesso ao Módulo" title="Acesso ao Módulo">Acesso ao Módulo</a></td>'.format(v.moduleLink);
+              elems += '<td><input class="form-check-input" type="checkbox" id="mod_{0}" name="permissions" value="{1}"></td>'.format(v[id_field], v[id_field]);
+              elems += '<td>{0}</td>'.format(v[name_field]);
+              elems += '<td><a href="{0}" alt="Acesso ao Módulo" title="Acesso ao Módulo">Acesso ao Módulo</a></td>'.format(v[link_field]);
               elems += '</tr>';
             })
             $("#perms tbody").html(elems);
@@ -105,7 +109,7 @@
       }
 
       function buscaUserId(uid, funcao) {
-        $("#form-user").attr('action', '/user/edit');
+        $("#form-user").attr('action', '/dashboard/user/edit');
         $.ajax({
           url: '/dashboard/user/findById/{0}'.format(uid),
           // args: {'id': uid},
@@ -126,7 +130,7 @@
       }
 
       function showInserirUser() {
-        $("#form-user").attr('action', '/user/insert');
+        $("#form-user").attr('action', '/dashboard/user/insert');
         showModal();
         writeUserModules(null);
       }

@@ -24,6 +24,10 @@ router.post('/insert', auth,async function(req, res) {
 		Object.keys(req.body).map(el => {
 			if(req.body[el].includes("on")) auxArrayPermissions.push(el)
 		})
+		if (typeof req.body.permissions === 'array')
+			auxArrayPermissions = req.body.permissions
+		else if (typeof req.body.permissions === 'string')
+			auxArrayPermissions = [req.body.permissions];
 		var data = {
 			name: 		req.body.nome,
 			psw: 		req.body.senha,
@@ -31,7 +35,7 @@ router.post('/insert', auth,async function(req, res) {
 			sobrenome: 	req.body.sobrenome,
 			data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
 			cpf: 		req.body.cpf,
-			permission: auxArrayPermissions || req.body.permissions
+			permission: auxArrayPermissions
 		}
 
 		// verifica mesmo e-mail
@@ -87,7 +91,7 @@ router.post('/edit',auth, async function(req, res) {
 			sobrenome: 	req.body.sobrenome,
 			data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
 			cpf: 		req.body.cpf,
-			permission: req.body.permission
+			permission: req.body.permissions
 		}
 
 		// update nas permissoes
