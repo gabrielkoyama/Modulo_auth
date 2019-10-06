@@ -2,9 +2,6 @@ const path 			= require('path');
 const express 		= require('express');
 const bodyParser 	= require('body-parser');
 const app 			= express();
-const secureEnv 	= require('secure-env');
-global.env 			= secureEnv({secret:'msp'});
-
 global.userToken;
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -29,7 +26,7 @@ app.use('/module1/', require('./routes/module1Routes'));
 app.use('/module2/', require('./routes/module2Routes'));
 
 
-const port = global.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 app.listen(port, function() {
 	console.log('Running on port', port);

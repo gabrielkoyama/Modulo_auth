@@ -23,7 +23,7 @@ router.post('/sign-in', async function(req, res) {
 					nome: user[0].nome,
 					email: user[0].email
 				}
-				userToken =	jwt.sign(data, global.env.PASS_JWT);
+				userToken =	jwt.sign(data, process.env.PASS_JWT);
 				res.redirect('/dashboard/middleware');
 			}else{
 				res.send('senha incorreta');

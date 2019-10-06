@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/dashboard', auth, function(req, res, next) {
-	user = jwt.decode(userToken, global.env.PASS_JWT)
+	user = jwt.decode(userToken, process.env.PASS_JWT)
 	res.render('dashboard/index', {user: user.nome});
 });
 
