@@ -13,7 +13,6 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
 app.use('/', require('./routes/indexRoutes'));
-// app.use('/dashboard', require('./routes/indexRoutes'));
 app.use('/dashboard/login', require('./routes/loginRoutes'));
 app.use('/dashboard/user', require('./routes/userRoutes'));
 app.use('/dashboard/module', require('./routes/moduleRoutes'));
