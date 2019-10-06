@@ -1,0 +1,4 @@
+cd /var/www/app
+git pull
+pm2 delete all
+pm2 start app.js
