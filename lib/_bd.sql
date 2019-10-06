@@ -31,15 +31,15 @@ CREATE TABLE IF NOT EXISTS tb_usu_module_permission(
 -- ------------------- INSERTS MODULES ---------------------------
 	-- Module dashboard
 	INSERT INTO tb_module (mod_nm, mod_descricao, mod_link)
-	VALUES ('Dashboard', 'Dashboard para controle de usuarios', 'http://localhost:3000');
+	VALUES ('Dashboard', 'Dashboard para controle de usuarios', '/dashboard');
 
 	-- Module 1
 	INSERT INTO tb_module (mod_nm, mod_descricao, mod_link)
-	VALUES ('Module1', 'Modulo exemplo M2', 'http://localhost:3001');
+	VALUES ('Module1', 'Modulo exemplo M2', '/module11');
 
 	-- Module 2
 	INSERT INTO tb_module (mod_nm, mod_descricao, mod_link)
-	VALUES ('Module2', 'Modulo exemplo M2', 'http://localhost:3002');
+	VALUES ('Module2', 'Modulo exemplo M2', 'module2');
 
 -- ------------------- INSERTS TESTE ---------------------------
 INSERT INTO tb_user (
