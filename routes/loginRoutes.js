@@ -17,7 +17,6 @@ router.post('/sign-in', async function(req, res) {
 		if(user.length == 0){
 			res.send('usuario nao existe')
 		}else{
-			console.log(user[0]);
 			if(user[0].senha == sha256(req.body.senha)){
 				data = {
 					id: user[0].id,
