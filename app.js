@@ -24,7 +24,6 @@ app.use('/module1/', require('./routes/module1Routes'));
 // module2
 app.use('/module2/', require('./routes/module2Routes'));
 
-
 const port = process.env.PORT || 80;
 
 
