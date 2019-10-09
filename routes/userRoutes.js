@@ -34,7 +34,7 @@ router.post('/insert', auth,async function(req, res) {
 			email:  	req.body.email,
 			sobrenome: 	req.body.sobrenome,
 			data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
-			cpf: 		req.body.cpf,
+			cpf: 		req.body.cpf || null,
 			permission: auxArrayPermissions
 		}
 
@@ -89,9 +89,9 @@ router.post('/edit',auth, async function(req, res) {
 			name: 		req.body.nome,
 			psw: 		req.body.senha,
 			email:  	req.body.email,
-			sobrenome: 	req.body.sobrenome,
-			data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
-			cpf: 		req.body.cpf,
+			sobrenome: 	req.body.sobrenome || null,
+			data_nasc: 	new Date(), //dando erro ao editar *incorrect datetime value
+			cpf: 		req.body.cpf || null,
 			permission: req.body.permissions
 		}
 
