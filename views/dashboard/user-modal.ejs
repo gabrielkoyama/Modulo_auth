@@ -1,72 +1,98 @@
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="modalModuleTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modal-title">Usuario</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
 
-<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal-title">Usuário</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="form-user" action="/user/edit" method="POST">
-        <!-- -->
+				<form>
+					<div class="form-group">
+						<div class="row">
+							<div class="col">
+								<div class="form-group">
+									<label for="">Nome</label>
+									<input type="text" class="form-control" id="nomeUserForm" placeholder="Nome">
+								</div>
+							</div>
+							<div class="col">
+								<div class="form-group">
+									<label for="">Sobrenome</label>
+									<input type="text" class="form-control" id="sobrenomeUserForm" placeholder="sobrenome">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+								<div class="col">
+									<div class="form-group">
+										<label for="">CPF</label>
+										<input type="text" class="form-control" id="cpfUserForm" placeholder="CPF">
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										<label for="">Data de Nascimento</label>
+										<input type="date" class="form-control" id="dataNascUserForm" placeholder="05/01/1998">
+									</div>
+								</div>
+							</div>
+						<div class="form-group">
+							<label for="">E-mail</label>
+							<input type="email" class="form-control" id="emailUserForm" placeholder="name@example.com">
+						</div>
+						<div class="form-group formSenha">
+							<label for="">Password</label>
+							<input type="password" class="form-control" id="senhaUserForm" placeholder="Password">
+							<small class="form-text text-muted">Obrigatorio: </small>
+							<ul>
+								<li> <small>Minimo 6 caracteres</small></li>
+								<li><small>Pelo menos 1 caracter especial</small></li>
+								<li><small>Pelo menos 1 numero</small></li>
+							</ul>
 
-        <div class="row">
-          <div class="col-3">
-              <i class="material-icons text-center">account_circle</i>
-          </div>
-          <div class="col">
+						</div>
 
-            <div class="row mb-1">
-              <input hidden type="text" name="id" id="id" value="">
-              <div class="col-6">
-                <input class="form-control" type="text" name="nome" id="nome" value="" placeholder="Nome" title="Nome">
-              </div>
-              <div class="col-6">
-                <input class="form-control" type="text" name="sobrenome" id="sobrenome" value="" placeholder="Sobrenome" title="Sobrenome">
-              </div>
-            </div>
+						<div class="form-group">
+							<label for="">Permissoes</label>
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th scope="col">#</th>
+										<th scope="col">Nome</th>
+										<th scope="col">Descricao</th>
+									</tr>
+								</thead>
+								<tbody class="userTableModule">
+									<tr>
+										<th scope="row"><input type="checkbox"></th>
+										<td>Mark</td>
+										<td>Mark</td>
+									</tr>
+									<tr>
+										<th scope="row">2</th>
+										<td>Jacob</td>
+										<td>Jacob</td>
+									</tr>
+									<tr>
+										<th scope="row">3</th>
+										<td>Larry</td>
+										<td>@twitter</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- <button type="submit" hidden class="btn btn-primary">Submit</button> -->
+				</form>
 
-            <div class="row">
-              <div class="col-12 mb-1">
-                <input class="form-control" type="text" name="email" id="email" value="" placeholder="E-mail">
-              </div>
-              <div class="col-12 mb-1">
-                <span class="subtitle"></span>
-                <input class="form-control" type="password" name="senha" id="senha" value="****" placeholder="****">
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="row">
-          <div class="col-12 mb-1">
-            <p class="subtitle text-muted mt-4">Permissões de Módulos</p>
-            <table id="perms" class="table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <td>Módulo</td>
-                  <!-- <th>Descrição</th> -->
-                  <th>Link</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
-        </div>
-      </form>
-
-      </div>
-      
-    </div>
-  </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+				<button type="submit" class="btn btn-primary add" onclick="users.add()">Salvar</button>
+			</div>
+		</div>
+	</div>
 </div>
-  

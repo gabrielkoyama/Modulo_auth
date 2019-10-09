@@ -20,22 +20,22 @@ router.get('/findById/:id',auth, async function(req, res) {
 router.post('/insert', auth,async function(req, res) {
 	
 	if(req.body){
-		var auxArrayPermissions = [];
-		Object.keys(req.body).map(el => {
-			if(req.body[el].includes("on")) auxArrayPermissions.push(el)
-		})
-		if (typeof req.body.permissions === 'array')
-			auxArrayPermissions = req.body.permissions
-		else if (typeof req.body.permissions === 'string')
-			auxArrayPermissions = [req.body.permissions];
+
+		// req.body.nome = 'teste'
+		// req.body.senha = '123',
+		// req.body.email = 'teste2@teste.com',
+		// req.body.sobrenome = 'teste',
+		// req.body.cpf = '123123'
+	
+
 		var data = {
 			name: 		req.body.nome,
 			psw: 		req.body.senha,
 			email:  	req.body.email,
 			sobrenome: 	req.body.sobrenome,
-			data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
+			data_nasc: 	req.body.data_nasc,
 			cpf: 		req.body.cpf,
-			permission: auxArrayPermissions
+			permission: req.body['permissions[]']
 		}
 
 		// verifica mesmo e-mail
@@ -51,9 +51,10 @@ router.post('/insert', auth,async function(req, res) {
 			let user = await sql.findByEmailUser(data.email);
 		
 			// seta permissoes
-			let perm = await sql.setPermissions({id:user[0].id, permission: data.permission});
+			let perm;
+			if(data.permission) perm = await sql.setPermissions({id:user[0].id, permission: data.permission});
 		
-			if(response.error || user.error || perm.error) res.send('error');
+			if(response.error || user.error ) res.send('error');
 			else res.redirect('/dashboard/user');
 		}
 
@@ -61,9 +62,9 @@ router.post('/insert', auth,async function(req, res) {
 
 });
 
-router.post('/getModulesFromUser', auth, async (req, res) => {
-	if (req.body) {
-		let user_modules = await sql.findUserModuleByUserId(req.body.id);
+router.get('/getModulesFromUser/:id', auth, async (req, res) => {
+	if (req.params.id) {
+		let user_modules = await sql.findUserModuleByUserId(req.params.id);
 		let modules = await sql.findAllModule();
 		res.send({'user_modules': user_modules, 'modules': modules});
 	}
@@ -73,9 +74,9 @@ router.post('/getModulesFromUser', auth, async (req, res) => {
 	}
 })
 
-router.post('/delete',auth, async function(req, res) {
-	if(req.body){
-		await sql.deleteOneUser(req.body.id)
+router.get('/deleteById/:id', auth, async function(req, res) {
+	if(req.params.id){
+		await sql.deleteOneUser(req.params.id)
 		res.sendStatus(200);
 	}else{
 		res.sendStatus(500);
@@ -87,21 +88,23 @@ router.post('/edit',auth, async function(req, res) {
 		var data = {
 			id:  		req.body.id,
 			name: 		req.body.nome,
-			psw: 		req.body.senha,
+			// psw: 		req.body.senha,
 			email:  	req.body.email,
 			sobrenome: 	req.body.sobrenome,
-			data_nasc: 	new Date().toLocaleString('pt-BR').slice(0,-3),
+			data_nasc: 	req.body.data_nasc,
 			cpf: 		req.body.cpf,
-			permission: req.body.permissions
+			permission: req.body['permissions[]']
 		}
 
 		// update nas permissoes
-		let permDel 	= await sql.deletePermissionById(data.id);
-		let permUpdate 	= await sql.setPermissions({id: data.id, permission: data.permission});
+		if(data.permission){
+			let permDel 	= await sql.deletePermissionById(data.id);
+			let permUpdate 	= await sql.setPermissions({id: data.id, permission: data.permission});
+		}
 
 		let edit = await sql.updateUser(data)
 
-		if(permDel.error || permUpdate.error || edit.error) res.sendStatus(500)
+		if(edit.error) res.sendStatus(500)
 		else res.send(200);
 	}else{
 		res.send(500);

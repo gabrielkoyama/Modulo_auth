@@ -40,7 +40,6 @@ const {auth, basicAuth} 	= require('../lib/auth');
 
 router.get('/', async function(req, res, next) {
 	let user = await findAllUser()
-	console.log(user)
 	userToken = "";
 	res.render('login');
 });

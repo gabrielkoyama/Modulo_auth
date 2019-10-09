@@ -1,227 +1,299 @@
 <!DOCTYPE html>
 <html>
-  <% include ./head %>
+<% include ./head %>
 
-  <body style="overflow-x: hidden">
-    
-  <div class="row">
+<style>
+.modal-dialog {
+    max-width: 800px !important;
+}
+</style>
 
-    <!-- sidebar -->
-    <% include ./sidebar %>
-  
-    <!-- content -->
-    <div class="container-fluid col-lg-10 col-md-10 col-sm-12">
+<body style="overflow-x: hidden">
 
-      <div class="bom-dia mb-5">
-        <h3>Olá <%= user %> <i class="float-right fa fa-sign-out mr-3" onclick="location.href='/dashboard/login/sign-out'" style="cursor: pointer"></i></h3>
-        <hr>
-      </div>
+	<div class="row">
 
-      <!-- list users -->
-      <div class="container lista">
-        <h5>Usuarios cadastrados <button class="btn btn-sm btn-success float-right" onclick="showInserirUser()"> Novo</button></h5>
-        
-        <table id="user_table" class="table table-hover ">
-          <thead>
-              <tr>
-                <th></th>
-                <th>#</th>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th></th>
-              </tr>    
-          </thead>
-          <tbody>
-            
-          </tbody>
-        </table>
-      </div>
-      
-    </div>
+		<!-- sidebar -->
+		<% include ./sidebar %>
 
-    <% include ./user-modal %>
+		<!-- content -->
+		<div class="container-fluid col-lg-10 col-md-10 col-sm-12">
 
-  </div>
-  
-    <script>
+			<div class="bom-dia mb-5">
+				<h3>Olá <%= username %> <i class="float-right fa fa-sign-out mr-3" onclick="location.href='/dashboard/login/sign-out'" style="cursor: pointer"></i></h3>
+				<hr>
+			</div>
 
-      const ids = ["id", "nome", "sobrenome", "email", "senha"];
+			<!-- list users -->
+			<div class="container lista">
+				<h5>Usuarios cadastrados <button class="btn btn-sm btn-success float-right" onclick="user.newUser()"> Novo</button></h5>
+				<!-- <button class="btn btn-sm btn-success float-right" onclick="user.newUser()"> TESTE MODAL USER</button> -->
 
-      function showModal() {
-        $('#userModal').modal();
-      }
+				<table id="user_table" class="table table-hover ">
+					<thead>
+						<tr>
+							<th></th>
+							<th>#</th>
+							<th>Nome</th>
+							<th>Sobrenome</th>
+							<th>E-mail</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
 
-      function writeUserNoModal(user) {
-        let elemento_ref = "";
-        $.each(ids, (k, elem_form) => {
-          elemento_ref = "#" + elem_form;
-          if (elem_form !== "senha")
-            $(elemento_ref).val(user[elem_form]);
-        })
-        
-      }
+					</tbody>
+				</table>
+			</div>
 
-      function edit(uid) {
-        let u = buscaUserId(uid, () => {
-          $.each(ids, (k, elem_form) => {
-            $("#" + elem_form).prop("disabled", false);
-          })
-          showModal();
-        }, true);
-      }
+		</div>
 
-      function show(uid) {
-        let u = buscaUserId(uid, () => {
-          $.each(ids, (k, elem_form) => {
-            $("#" + elem_form).prop("disabled", true);
-          })
-          showModal();
-        }, false);
-      }
+		<% include ./user-modal %>
 
-      function writeUserModules(uid, is_edit) {
-        let t = uid === null;
-        let url = t ? '/dashboard/module/getModules' : '/dashboard/user/getModulesFromUser';
-        let type = t ? 'GET' : 'POST';
-        let id_field = t ? 'id' : 'mod_id';
-        let name_field = t ? 'nome' : 'moduleName';
-        let link_field = t ? 'link' : 'module';
-        $.ajax({
-          url: url,
-          data: {id: uid},
-          type: type,
-          success: (data) => {
-            let elems = '';
-            let temp = [];
-            $.each(data.user_modules, (k, v) => {
-              temp.push(v[id_field]);
-              elems += '<tr>';
-              elems += '<td><input class="form-check-input" type="checkbox" id="mod_{0}" name="permissions" value="{1}" checked></td>'.format(v[id_field], v[id_field]);
-              elems += '<td>{0}</td>'.format(v[name_field]);
-              elems += '<td><a href="{0}" alt="Acesso ao Módulo" title="Acesso ao Módulo">Acesso ao Módulo</a></td>'.format(v[link_field]);
-              elems += '</tr>';
-            })
-            if (t !== null & is_edit)
-            {
-              $.each(data.modules, (k, v) => {
-                if (temp.map( (v, indx) => v.id == indx ).length == 0)
-                {
-                  elems += '<tr>';
-                  elems += '<td><input class="form-check-input" type="checkbox" id="mod_{0}" name="permissions" value="{1}"></td>'.format(v.id, v.id);
-                  elems += '<td>{0}</td>'.format(v.nome);
-                  elems += '<td><a href="{0}" alt="Acesso ao Módulo" title="Acesso ao Módulo">Acesso ao Módulo</a></td>'.format(v.link);
-                  elems += '</tr>';
-                }
-              })
-            }
-            $("#perms tbody").html(elems);
-          },
-          error: (err) => {
-            console.log(err);
-          }
-        })
-      }
+	</div>
 
-      function buscaUserId(uid, funcao, is_edit) {
-        $("#form-user").attr('action', '/dashboard/user/edit');
-        $.ajax({
-          url: '/dashboard/user/findById/{0}'.format(uid),
-          // args: {'id': uid},
-          success: (data) => {
-            data = data[0];
-            funcao();
-            writeUserModules(uid, Boolean(is_edit));
-            writeUserNoModal(data);
-          }
-        })
-      }
+	<script>
+		var user = {
+			newUser: function () {
+				user.clearModal();
+				$('.add').attr('onclick', 'user.add()')
+				if ($('.modal-footer').hasClass('d-none')) $('.modal-footer').removeClass('d-none')
+				if ($('.formSenha').hasClass('d-none')) $('.formSenha').removeClass('d-none')
+				user.mountTablePermission()
+				$('#userModal').modal()
+			},
+			mountTablePermission: function(id=false, bhv){
+				if(!id){
+					$.get('/dashboard/module/getModules')
+						.done(res => {
+							var htm = '';
+							res.map(el => {
+								htm += '<tr>'
+								htm += '	<td><input type="checkbox" class="permissionArr" id='+el.id+'></td>';
+								htm += '	<td>'+el.nome+'</td>';
+								htm += '	<td>'+el.descricao+'</td>';
+								htm += '</tr>';
+							})
+							$('.userTableModule').html(htm)
+						})
+				}else{
+					if(bhv) $('.permissionArr').attr('disabled', 'disabled')
+					else $('.permissionArr').removeAttr('disabled')
+					
+					$.get('/dashboard/user/getModulesFromUser/' + id)
+						.done(res => {
+							var htm = '';
 
-      function deleteUser(uid) {
-        if (confirm("Deseja excluir o usuário?"))
-        {
-          $.ajax({url: '/dashboard/user/delete', data: {id: uid}, type: 'POST', success: (data) => { atualizaUserTable()  }})
-        }
-      }
+							console.log(res)
+							
+							$('.permissionArr').map(el => {
+								res.user_modules.map(p => {
+									if($($('.permissionArr')[el]).attr('id') == p.mod_id) 
+										$($('.permissionArr')[el]).prop('checked', true)
+									
+								})
+							})
 
-      function showInserirUser() {
-        $("#form-user").attr('action', '/dashboard/user/insert');
-        showModal();
-        writeUserModules(null, false);
-      }
 
-      function showInserirModule() {
-        // $("#form-user").attr('action', '/user/insert');
-        showModal();
-      }
-      var modules=[];
+							// res.map(el => {
+							// 	htm += '<tr>'
+							// 	htm += '	<td><input type="checkbox" class="permissionArr" id='+el.id+'></td>';
+							// 	htm += '	<td>'+el.nome+'</td>';
+							// 	htm += '	<td>'+el.descricao+'</td>';
+							// 	htm += '</tr>';
+							// })
+							// $('.userTableModule').html(htm)
+						})
+				}
+			},
+			clearModal: function () {
+				$('#nomeUserForm').val('');
+				$('#nomeUserForm').removeAttr('disabled');
 
-      $(document).ready( () => {
+				$('#sobrenomeUserForm').val('');
+				$('#sobrenomeUserForm').removeAttr('disabled');
 
-        // return id, nome, sobrenome, email FROM /user
-        p = {id: 1, nome: 1, sobrenome: 1, email: 1}
+				$('#cpfUserForm').val('');
+				$('#cpfUserForm').removeAttr('disabled');
 
-        $.ajax({
-          url: '/dashboard/user/getUsers',
-          data: p,
-          type: 'GET',
-          success: function (data) {
-            let res = '';
-            $.each(data, (i, k) => {
-              res += '<tr><td><i class="material-icons">account_circle</i></td>';
-              res += '<td>{0}</td>'.format(k.id);
-              res += '<td>{0} {1}</td>'.format(k.nome, k.sobrenome);
-              res += '<td>{0}</td>'.format(k.email);
-              res += '<td>\
-                        <button class="btn btn-light btn-sm" onclick="show('+k.id+');"><i class="material-icons">visibility</i></button>\
-                        <button class="btn btn-light btn-sm" onclick="edit('+k.id+');"><i class="material-icons">create</i></button>\
-                        <button class="btn btn-light btn-sm" onclick="deleteUser('+k.id+')"><i class="material-icons">delete_outline</i></button>\
-                      </td></tr>';
-            });
-            $("#user_table tbody").html(res);
-          }
-        })
+				$('#dataNascUserForm').val('');
+				$('#dataNascUserForm').removeAttr('disabled');
 
-        $.get('/dashboard/module/getAll').done(res=> { 
-          var htm='';
-          res.map(el => {
-            htm += '<tr>';
-            htm += `<td><input type="checkbox" name=${el.id}></td>`;
-            htm += `<td>${el.nome}</td>`;
-            htm += `<td>${el.descricao}</td>`;
-            htm += '</tr>';
-          })
-          $('.modulesPermissionTable').html(htm)
-        })
+				$('#emailUserForm').val('');
+				$('#emailUserForm').removeAttr('disabled');
+				
+				$('#senhaUserForm').val('');
+				$('#senhaUserForm').removeAttr('disabled');
 
-      });
+				$('#userModal').modal('hide');
+			},
+			delete: function (id) {
+				$.get('/dashboard/user/deleteById/' + id)
+					.done(res => {
+						user.table();
+					})
+					.fail(err => {
+						console.log('err')
+					})
+			},
+			feedModal: function (data, opc) {
+				console.log(data)
+				$('#nomeUserForm').val(data.nome);
+				$('#sobrenomeUserForm').val(data.sobrenome);
+				$('#cpfUserForm').val(data.cpf);
+				$('#dataNascUserForm').val(data.data_nasc.split('T')[0]);
+				$('#emailUserForm').val(data.email);
+				$('.formSenha').addClass('d-none');
 
-      function atualizaUserTable(){
-        // return id, nome, sobrenome, email FROM /user
-        p = {id: 1, nome: 1, sobrenome: 1, email: 1}
+				if (opc.includes('edit')) {
+					user.mountTablePermission(data.id)
+					$('#nomeUserForm').removeAttr('disabled');
+					$('#sobrenomeUserForm').removeAttr('disabled');
+					$('#cpfUserForm').removeAttr('disabled');
+					$('#dataNascUserForm').removeAttr('disabled');
+					$('#emailUserForm').removeAttr('disabled');
+					$('#senhaUserForm').removeAttr('disabled');
+					$('.modal-footer').removeClass('d-none');
+					$('.add').attr('onclick', 'user.edit(' + data.id + ')')
+				}
+				if (opc.includes('view')) {
+					user.mountTablePermission(data.id,  'view')
+					$('#nomeUserForm').attr('disabled', 'disabled');
+					$('#sobrenomeUserForm').attr('disabled', 'disabled');
+					$('#cpfUserForm').attr('disabled', 'disabled');
+					$('#dataNascUserForm').attr('disabled', 'disabled');
+					$('#emailUserForm').attr('disabled', 'disabled');
+					$('#senhaUserForm').attr('disabled', 'disabled');
+					$('.modal-footer').addClass('d-none');
+				}
 
-        $.ajax({
-          url: '/dashboard/user/getUsers',
-          data: p,
-          type: 'GET',
-          success: function (data) {
-            let res = '';
-            $.each(data, (i, k) => {
-              res += '<tr><td><i class="material-icons">account_circle</i></td>';
-              res += '<td>{0}</td>'.format(k.id);
-              res += '<td>{0} {1}</td>'.format(k.nome, k.sobrenome);
-              res += '<td>{0}</td>'.format(k.email);
-              res += '<td>\
-                        <button class="btn btn-light btn-sm" onclick="show('+k.id+');"><i class="material-icons">visibility</i></button>\
-                        <button class="btn btn-light btn-sm" onclick="edit('+k.id+');"><i class="material-icons">create</i></button>\
-                        <button class="btn btn-light btn-sm" onclick="deleteUser('+k.id+')"><i class="material-icons">delete_outline</i></button>\
-                      </td></tr>';
-            });
-            $("#user_table tbody").html(res);
-          }
-        })
-      }
-      
-    </script>
+				$('#userModal').modal('show');
+			},
+			add: function () {
+				
+				var permissionsIds = [];
+				$('.permissionArr').map(el => {
+					if($($('.permissionArr')[el]).is(':checked')) permissionsIds.push($($('.permissionArr')[el]).attr('id'))
+				})
+				
 
-  </body>
+				var data = {
+					nome: $('#nomeUserForm').val(),
+					sobrenome: $('#sobrenomeUserForm').val(),
+					cpf: $('#cpfUserForm').val(),
+					data_nasc: $('#dataNascUserForm').val(),
+					email: $('#emailUserForm').val(),
+					senha: $('#senhaUserForm').val(),
+					permissions: permissionsIds
+				}
+				if(validaCPF(data.cpf)){
+					$.post('/dashboard/user/insert', data)
+						.done(res => {
+							user.clearModal()
+							user.table()
+						})
+						.fail(err => {
+							user.clearModal()
+							alert('Erro')
+						})
+				}else{
+					alert('cpf invalido')
+				}
+
+			},
+			table: function () {
+				$.ajax({
+					url: '/dashboard/user/getUsers',
+					data: {
+						id: 1,
+						nome: 1,
+						descricao: 1,
+						link: 1
+					},
+					type: 'GET',
+					success: function (data) {
+						let res = '';
+						$.each(data, (i, k) => {
+							res += '<tr><td><i class="fa fa-desktop"></i></td>';
+							res += '<td>{0}</td>'.format(k.id);
+							res += '<td>{0}</td>'.format(k.nome);
+							res += '<td>{0}</td>'.format(k.sobrenome);
+							res += '<td>{0}</td>'.format(k.email);
+							res += '<td>\
+							<button class="btn btn-light btn-sm" onclick="user.show(' + k.id + ');"><i class="material-icons">visibility</i></button>\
+							<button class="btn btn-light btn-sm" onclick="user.showEditModal(' + k.id + ');"><i class="material-icons">create</i></button>\
+							<button class="btn btn-light btn-sm" onclick="user.delete(' + k.id + ')"><i class="material-icons">delete_outline</i></button>\
+							</td></tr>';
+						});
+						$("#user_table tbody").html(res);
+					}
+				})
+			},
+			show: function (id) {
+				$.get('/dashboard/user/findById/' + id)
+					.done(res => {
+						user.feedModal(res[0], 'view')
+					})
+					.fail(err => {
+						console.log('err')
+					})
+			},
+			showEditModal: function (id) {
+				$.get('/dashboard/user/findById/' + id)
+					.done(res => {
+						user.feedModal(res[0], 'edit')
+					})
+					.fail(err => {})
+			},
+			edit: function (id) {
+				var permissionsIds = [];
+				$('.permissionArr').map(el => {
+					if($($('.permissionArr')[el]).is(':checked')) permissionsIds.push($($('.permissionArr')[el]).attr('id'))
+				})
+				var data = {
+					id: id,
+					nome: $('#nomeUserForm').val(),
+					sobrenome: $('#sobrenomeUserForm').val(),
+					cpf: $('#cpfUserForm').val(),
+					data_nasc: $('#dataNascUserForm').val(),
+					email: $('#emailUserForm').val(),
+					senha: $('#senhaUserForm').val(),
+					permissions: permissionsIds
+				}
+				$.post('/dashboard/user/edit', data).done(res => {
+						user.clearModal()
+						user.table()
+					})
+					.fail(err => {
+						alert('err');
+					})
+			}
+		}
+
+		function validaCPF(strCPF) {
+			var Soma;
+			var Resto;
+			Soma = 0;
+			if (strCPF == "00000000000") return false;
+				
+			for (i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
+			Resto = (Soma * 10) % 11;
+			
+				if ((Resto == 10) || (Resto == 11))  Resto = 0;
+				if (Resto != parseInt(strCPF.substring(9, 10)) ) return false;
+			
+			Soma = 0;
+				for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);
+				Resto = (Soma * 10) % 11;
+			
+				if ((Resto == 10) || (Resto == 11))  Resto = 0;
+				if (Resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+				return true;
+		}
+		user.table();
+		user.mountTablePermission();
+
+	</script>
+
+</body>
+
 </html>

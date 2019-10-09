@@ -24,6 +24,9 @@ router.post('/sign-in', async function(req, res) {
 					email: user[0].email
 				}
 				userToken =	jwt.sign(data, process.env.PASS_JWT);
+				a = user[0].nome.slice(1);
+				username = user[0].nome[0].toUpperCase() + a;
+				
 				res.redirect('/dashboard/middleware');
 			}else{
 				res.send('senha incorreta');
