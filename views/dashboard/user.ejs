@@ -67,8 +67,7 @@
             $("#" + elem_form).prop("disabled", false);
           })
           showModal();
-          writeUserModules(uid);
-        });
+        }, true);
       }
 
       function show(uid) {
@@ -77,10 +76,10 @@
             $("#" + elem_form).prop("disabled", true);
           })
           showModal();
-        });
+        }, false);
       }
 
-      function writeUserModules(uid) {
+      function writeUserModules(uid, is_edit) {
         let t = uid === null;
         let url = t ? '/dashboard/module/getModules' : '/dashboard/user/getModulesFromUser';
         let type = t ? 'GET' : 'POST';
@@ -93,13 +92,28 @@
           type: type,
           success: (data) => {
             let elems = '';
-            $.each(data, (k, v) => {
+            let temp = [];
+            $.each(data.user_modules, (k, v) => {
+              temp.push(v[id_field]);
               elems += '<tr>';
-              elems += '<td><input class="form-check-input" type="checkbox" id="mod_{0}" name="permissions" value="{1}"></td>'.format(v[id_field], v[id_field]);
+              elems += '<td><input class="form-check-input" type="checkbox" id="mod_{0}" name="permissions" value="{1}" checked></td>'.format(v[id_field], v[id_field]);
               elems += '<td>{0}</td>'.format(v[name_field]);
               elems += '<td><a href="{0}" alt="Acesso ao Módulo" title="Acesso ao Módulo">Acesso ao Módulo</a></td>'.format(v[link_field]);
               elems += '</tr>';
             })
+            if (t !== null & is_edit)
+            {
+              $.each(data.modules, (k, v) => {
+                if (temp.map( (v, indx) => v.id == indx ).length == 0)
+                {
+                  elems += '<tr>';
+                  elems += '<td><input class="form-check-input" type="checkbox" id="mod_{0}" name="permissions" value="{1}"></td>'.format(v.id, v.id);
+                  elems += '<td>{0}</td>'.format(v.nome);
+                  elems += '<td><a href="{0}" alt="Acesso ao Módulo" title="Acesso ao Módulo">Acesso ao Módulo</a></td>'.format(v.link);
+                  elems += '</tr>';
+                }
+              })
+            }
             $("#perms tbody").html(elems);
           },
           error: (err) => {
@@ -108,7 +122,7 @@
         })
       }
 
-      function buscaUserId(uid, funcao) {
+      function buscaUserId(uid, funcao, is_edit) {
         $("#form-user").attr('action', '/dashboard/user/edit');
         $.ajax({
           url: '/dashboard/user/findById/{0}'.format(uid),
@@ -116,7 +130,7 @@
           success: (data) => {
             data = data[0];
             funcao();
-            writeUserModules(uid);
+            writeUserModules(uid, Boolean(is_edit));
             writeUserNoModal(data);
           }
         })
@@ -132,7 +146,7 @@
       function showInserirUser() {
         $("#form-user").attr('action', '/dashboard/user/insert');
         showModal();
-        writeUserModules(null);
+        writeUserModules(null, false);
       }
 
       function showInserirModule() {

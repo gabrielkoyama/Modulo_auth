@@ -63,8 +63,9 @@ router.post('/insert', auth,async function(req, res) {
 
 router.post('/getModulesFromUser', auth, async (req, res) => {
 	if (req.body) {
-		let modules = await sql.findUserModuleByUserId(req.body.id);
-		res.send(modules);
+		let user_modules = await sql.findUserModuleByUserId(req.body.id);
+		let modules = await sql.findAllModule();
+		res.send({'user_modules': user_modules, 'modules': modules});
 	}
 	else
 	{
