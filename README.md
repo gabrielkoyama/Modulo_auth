@@ -12,11 +12,13 @@ permitido se ainda válido no momento.
 Para o desenvolvimento deste projeto, optou-se por utilizar estas tecnologias:
 
 * NodeJS
-   - Escolhido por ser rápido, flexível e de fácil implantação na empresa *Visiona*.
+   - Escolhido por ser rápido, flexível e de fácil implantação na empresa *Visiona*, pois já o utilizam.
 * Express
-   - framework
+   - Framework web minimalista para NodeJS.
 * MySQL
-   - banco de dados relacional co
+   - Se trata de um Banco de Dados relacional muito popular, que serve para armazenar o que cada usuário pode acessar.
+* JSON Web Token
+   - Tornou-se uma opção por ser capaz de gerar um token passível de ser digitalmente assinado e protegido por algorítmos globalmente aceitos.
 
 ### Como Reproduzir
 
