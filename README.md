@@ -24,6 +24,11 @@ Para o desenvolvimento deste projeto, optou-se por utilizar estas tecnologias:
 
 ### Solução
 
+Um usuário logado adentra estes casos:
+ * Pode acessar os módulos que lhe são permitidos.
+ * Pode sair.
+ * Caso entre na página de algum módulo não permitido, o mesmo é forçado a sair, logo, volta a página de login.
+
 #### Referências
 
 NodeJS: https://nodejs.org/en/docs/   
