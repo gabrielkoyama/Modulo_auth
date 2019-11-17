@@ -5,7 +5,11 @@
 Este projeto tem em vista solucionar um problema de autênticidade de acesso a
 recursos dentro de um sistema de informação em conjunto com a empresa ***Visiona***, então, faz-se isto por meio de *token*s únicos para
 cada usuário gerados no momento do login e, através do sistema, o *token* é carregado e
-permitido se ainda válido no momento.
+permitido se ainda válido no momento.   
+Para solucionar certos problemas, tais como:   
+ - Senhas de produção em arquivos disponível para desenvolvedores.   
+ 
+ Durante a implantação de novo código de software em um servidor de produção, optou-se por implantação automática utilizando o SemaphoreCI.
 
 ### Tecnologias Utilizadas
 
