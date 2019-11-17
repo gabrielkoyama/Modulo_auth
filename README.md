@@ -23,9 +23,9 @@ Para o desenvolvimento deste projeto, optou-se por utilizar estas tecnologias:
    - É uma plataforma de integração e entrega contínua com suporte a aplicações nativas na nuvem.
 
 ### Como Reproduzir
-
+''
 ### Solução
-
+No sistema, é feito um cadastro das módulos existentes no sistema, de tal forma, que seja possível limitá-los a certos usuários o acesso a estes módulos.   
 Um usuário logado adentra estes casos:
  * Pode acessar os módulos que lhe são permitidos.
  * Pode sair.
