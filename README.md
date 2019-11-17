@@ -19,6 +19,8 @@ Para o desenvolvimento deste projeto, optou-se por utilizar estas tecnologias:
    - Tornou-se uma opção por ser capaz de gerar um token passível de ser digitalmente assinado e protegido por algorítmos globalmente aceitos.
 * MySQL
    - Se trata de um Banco de Dados relacional muito popular, que serve para armazenar o que cada usuário pode acessar.
+* SemaphoreCI
+   - É uma plataforma de integração e entrega contínua com suporte a aplicações nativas na nuvem.
 
 ### Como Reproduzir
 
@@ -35,5 +37,5 @@ NodeJS: https://nodejs.org/en/docs/
 ExpressJS: https://expressjs.com/pt-br/   
 JSON Web Tokens: https://jwt.io/   
 MySQL: https://www.mysql.com/   
-
+SemaphoreCI: https://docs.semaphoreci.com/category/56-guided-tour
 
