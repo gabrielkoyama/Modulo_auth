@@ -1,4 +1,5 @@
 cd /var/www/app
+javascript-obfuscator ./public/js/main.js --output ./public/js/main.js
 git pull
 pm2 delete all
 pm2 start app.js
