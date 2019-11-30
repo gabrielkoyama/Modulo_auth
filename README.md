@@ -27,7 +27,64 @@ Para o desenvolvimento deste projeto, optou-se por utilizar estas tecnologias:
    - É uma plataforma de integração e entrega contínua com suporte a aplicações nativas na nuvem.
 
 ### Como Reproduzir
-''
+
+## Como reproduzir
+
+Primeiramente o desenvolvedor deve ter o [NodeJS](https://nodejs.org/en/download/)  instalado. 
+
+
+Para reproduzir o desenvolver deve ter instalado:
+
+> * [Node](https://nodejs.org/en/download/)
+> * [Mysql Server](https://dev.mysql.com/downloads/mysql/)
+> * [Git](https://git-scm.com/downloads)
+
+Para testar abra o cmd ou terminal e digite:
+
+```
+
+	node --version
+	npm --version
+	git --version
+	
+```
+
+Se tudo estiver ok, clone este projeto, instale as dependencias e antes de executar, crie um arquive **.env** para configurar as credenciais do seu banco de dev.
+
+```
+	git clone https://github.com/Gabrielkoyamao/Modulo_auth.git
+```
+Entre na pasta
+
+``` 
+	cd Modulo_auth 
+```
+Instale as dependencias necessarias com
+
+``` 
+	npm install
+```
+
+O seu arquivo **.env** deve seguir este padrao:
+
+```
+DB_HOST=host_banco_dev
+DB_PORT=port_banco_dev
+DB_USER=usuario_dev
+DB_PASSWORD=password_dev
+DB_DATABASE=AUTH 
+```
+Enfim, para executar o projeto basta executar o comando:
+```
+	npm start
+```
+ou
+```
+	node app.js
+```
+## Configurações Semaphore CI
+DOING
+
 ### Solução
 No sistema, é feito um cadastro das módulos existentes no sistema, de tal forma, que seja possível limitá-los a certos usuários o acesso a estes módulos.   
 Um usuário logado adentra estes casos:
