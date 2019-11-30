@@ -28,8 +28,6 @@ Para o desenvolvimento deste projeto, optou-se por utilizar estas tecnologias:
 
 ### Como Reproduzir
 
-## Como reproduzir
-
 Primeiramente o desenvolvedor deve ter o [NodeJS](https://nodejs.org/en/download/)  instalado. 
 
 
