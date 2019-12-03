@@ -98,6 +98,6 @@ NodeJS: https://nodejs.org/en/docs/
 ExpressJS: https://expressjs.com/pt-br/   
 JSON Web Tokens: https://jwt.io/   
 MySQL: https://www.mysql.com/   
-SemaphoreCI: https://docs.semaphoreci.com/category/56-guided-tour
+SemaphoreCI: https://docs.semaphoreci.com/category/56-guided-tour     
 Javascript-Obfuscator: https://www.npmjs.com/package/javascript-obfuscator
 
