@@ -25,6 +25,8 @@ Para o desenvolvimento deste projeto, optou-se por utilizar estas tecnologias:
    - Se trata de um Banco de Dados relacional muito popular, que serve para armazenar o que cada usuário pode acessar.
 * SemaphoreCI
    - É uma plataforma de integração e entrega contínua com suporte a aplicações nativas na nuvem.
+* Javascript-Obfuscator
+   - É uma biblioteca, disponível no 'npm', e possui a capacidade de ofuscar código javascript, tanto via linha de comando (CLI) ou dentro do próprio código. Também é possível ajustar o nível de ofuscação, limitar a partes do código, e de forma geral de como a ofuscação irá se comportar.
 
 ### Como Reproduzir
 
@@ -97,4 +99,5 @@ ExpressJS: https://expressjs.com/pt-br/
 JSON Web Tokens: https://jwt.io/   
 MySQL: https://www.mysql.com/   
 SemaphoreCI: https://docs.semaphoreci.com/category/56-guided-tour
+Javascript-Obfuscator: https://www.npmjs.com/package/javascript-obfuscator
 
